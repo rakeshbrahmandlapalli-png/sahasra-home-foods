@@ -2,4 +2,5 @@
 # but they have no business on a customer-facing website.
 setup/
 *.txt
+!robots.txt
 .gitignore

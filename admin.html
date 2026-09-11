@@ -274,9 +274,25 @@
             <p class="hint">This one may start with +.</p>
           </div>
         </div>
+        <div class="grid" style="grid-template-columns:1fr 1fr">
+          <div class="field">
+            <label for="s_hours">Opening hours</label>
+            <input id="s_hours" data-s="hours" placeholder="8 am to 8 pm, every day">
+          </div>
+          <div class="field">
+            <label for="s_min">Minimum order</label>
+            <input id="s_min" data-s="min_order" placeholder="No minimum">
+          </div>
+        </div>
+        <div class="field">
+          <label for="s_delivery">Where you deliver</label>
+          <input id="s_delivery" data-s="delivery" placeholder="Manikonda and nearby areas">
+          <p class="hint">Leave any of these empty and the site simply does not show that line.</p>
+        </div>
         <div class="field" style="margin:0">
-          <label for="s_note">Note at the bottom of the menu</label>
-          <textarea id="s_note" data-s="footer_note"></textarea>
+          <label for="s_note">How much notice you need, shown at the bottom of the menu</label>
+          <textarea id="s_note" data-s="lead_time"
+            placeholder="Same day for small orders. Two days for 2 kg or more."></textarea>
         </div>
       </div>
     </div>

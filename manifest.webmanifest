@@ -1,0 +1,17 @@
+{
+  "name": "Sahasra Home Foods",
+  "short_name": "Sahasra",
+  "description": "Homemade Telugu sweets, snacks, podi and fresh batters. Made to order in Manikonda, Hyderabad.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fdfbf9",
+  "theme_color": "#9d1c20",
+  "lang": "en-IN",
+  "categories": ["food", "shopping"],
+  "icons": [
+    { "src": "/brand/app-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/brand/app-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

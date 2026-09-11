@@ -18,7 +18,9 @@
 <meta property="og:image" content="https://sahasra-home-foods.vercel.app/brand/share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<link rel="apple-touch-icon" href="brand/app-icon-192.png">
+<link rel="apple-touch-icon" href="/brand/app-icon-192.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="canonical" href="https://sahasra-home-foods.vercel.app/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,6 +82,20 @@
     transition:border-color .15s,color .15s;
   }
   .top .callbtn:active{background:var(--bg-2)}
+
+  /* The things someone needs to know before they can decide to order.
+     Each one hides itself if the shop has not filled it in. */
+  .facts{
+    display:flex;flex-wrap:wrap;gap:0 22px;padding:0 var(--pad) 15px;
+    border-bottom:1px solid var(--line-2);margin-bottom:2px;
+  }
+  .facts div{padding:3px 0}
+  .facts dt{
+    font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--ink-3);margin:0 0 2px;
+  }
+  .facts dd{margin:0;font-size:13px;color:var(--ink);line-height:1.35}
+  .facts[hidden]{display:none}
 
   .search{padding:10px var(--pad) 12px;position:relative}
   .search svg{
@@ -235,6 +251,16 @@
   footer p{margin:0 0 5px;font-size:14px;color:var(--ink-2);line-height:1.5}
   footer a{color:var(--ink);font-weight:600;text-decoration:none;
     border-bottom:1px solid var(--line);padding-bottom:1px}
+  .share{
+    display:inline-flex;align-items:center;gap:8px;margin:22px 0 0;
+    border:1px solid var(--line);background:var(--bg);color:var(--ink);
+    border-radius:8px;padding:11px 16px;cursor:pointer;text-decoration:none;
+    font-family:var(--sans);font-size:10.5px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;transition:border-color .15s;
+  }
+  .share:hover{border-color:var(--ink-3)}
+  .share svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
   .credits{
     margin:26px 0 0;padding-top:20px;border-top:1px solid var(--line);
     font-size:12.5px;color:var(--ink-3);
@@ -352,6 +378,7 @@
       </div>
       <a class="callbtn" id="callBtn" href="tel:+917207806223">Call</a>
     </div>
+    <dl class="facts" id="facts" hidden></dl>
   </div>
 </div>
 
@@ -382,8 +409,22 @@
     <div>
       <h4>Where we cook</h4>
       <p id="areaText">Manikonda, Hyderabad</p>
+      <p id="fDelivery" hidden></p>
+    </div>
+    <div id="fTimingsBlock" hidden>
+      <h4>Timings</h4>
+      <p id="fHours"></p>
+      <p id="fMin" hidden></p>
     </div>
   </div>
+
+  <button class="share" id="share" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"></path>
+      <path d="M12 15V3"></path><path d="M8 7l4-4 4 4"></path>
+    </svg>
+    <span id="shareLabel">Share this menu</span>
+  </button>
 
   <details class="credits">
     <summary>Photo credits</summary>
@@ -522,6 +563,9 @@ let MENU = FALLBACK_MENU;
 const cart = new Map();                 // key -> qty
 const key  = (s,i) => s + ":" + i;
 const $    = id => document.getElementById(id);
+
+const esc = v => String(v == null ? "" : v)
+  .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 
 const rupees = n => "₹" + Math.round(n).toLocaleString("en-IN");
 
@@ -720,6 +764,63 @@ const spy = new IntersectionObserver(es => {
      (parseInt(getComputedStyle(document.documentElement)
        .getPropertyValue("--head")) || 120) + "px 0px -70% 0px" });
 
+let SHOP = null;
+
+/* Structured data, so a search engine understands this is a food business
+   in Manikonda with a menu, rather than an unlabelled page of words. */
+function publishStructuredData(){
+  const c = SHOP || {};
+  let el = document.getElementById("ld");
+  if(!el){
+    el = document.createElement("script");
+    el.type = "application/ld+json"; el.id = "ld";
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FoodEstablishment",
+    name: c.shop_name || "Sahasra Home Foods",
+    description: "Homemade Telugu sweets, snacks, podi and fresh batters, made to order.",
+    servesCuisine: "Telugu",
+    url: location.origin + "/",
+    image: location.origin + "/brand/share.jpg",
+    telephone: c.phone || "+917207806223",
+    priceRange: "₹₹",
+    address: { "@type": "PostalAddress",
+      addressLocality: (c.area || "Manikonda, Hyderabad").split(",")[0].trim(),
+      addressRegion: "Telangana", addressCountry: "IN" },
+    hasMenu: { "@type": "Menu", hasMenuSection: MENU.map(sec => ({
+      "@type": "MenuSection", name: sec.name,
+      hasMenuItem: sec.items.map(it => ({
+        "@type": "MenuItem", name: it.en,
+        ...(it.price === null ? {} : { offers: { "@type": "Offer",
+          price: it.price, priceCurrency: "INR", description: "per " + sec.unit } }),
+      })) })) },
+  });
+}
+
+/* Forwarding the link is how this business actually spreads. */
+function wireShare(){
+  const btn = $("share"), label = $("shareLabel");
+  if(!btn) return;
+  btn.addEventListener("click", async () => {
+    const data = {
+      title: (SHOP && SHOP.shop_name) || "Sahasra Home Foods",
+      text: "Homemade Telugu sweets, snacks and podi — made to order.",
+      url: location.origin + "/",
+    };
+    try{
+      if(navigator.share){ await navigator.share(data); return; }
+      await navigator.clipboard.writeText(data.url);
+      label.textContent = "Link copied";
+    }catch(err){
+      if(err && err.name === "AbortError") return;
+      label.textContent = location.host;
+    }
+    setTimeout(() => { label.textContent = "Share this menu"; }, 2600);
+  });
+}
+
 function render(){
   cart.clear();
   build();
@@ -735,6 +836,8 @@ function render(){
    for any reason the customer keeps the safety copy and sees nothing odd.
    ────────────────────────────────────────────────────────────────────── */
 render();
+publishStructuredData();
+wireShare();
 
 async function loadLiveMenu(){
   const cfg = window.SAHASRA_CONFIG;
@@ -772,6 +875,7 @@ async function loadLiveMenu(){
 
   const c = setts && setts.data;
   if(c){
+    SHOP = c;
     WHATSAPP = c.whatsapp || WHATSAPP;
     const set = (id, txt) => { const el = $(id); if(el && txt) el.textContent = txt; };
     set("shopName", c.shop_name);
@@ -780,6 +884,33 @@ async function loadLiveMenu(){
     set("areaText", c.area);
     set("footNote", c.footer_note);
     if(c.shop_name) document.title = c.shop_name + (c.area ? " — " + c.area : "");
+    /* Only show a fact the shop has actually filled in. A heading with
+       nothing under it is worse than no heading. */
+    const facts = [
+      ["Hours",        c.hours],
+      ["Delivery",     c.delivery],
+      ["Minimum order", c.min_order],
+    ].filter(f => f[1] && f[1].trim());
+
+    if(facts.length){
+      $("facts").innerHTML = facts.map(([k, v]) =>
+        `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("");
+      $("facts").hidden = false;
+    }
+    if(c.lead_time && c.lead_time.trim()) set("footNote", c.lead_time);
+    if(c.delivery && c.delivery.trim()){
+      $("fDelivery").textContent = "Delivering to " + c.delivery;
+      $("fDelivery").hidden = false;
+    }
+    if(c.hours && c.hours.trim()){
+      $("fHours").textContent = c.hours;
+      $("fTimingsBlock").hidden = false;
+      if(c.min_order && c.min_order.trim()){
+        $("fMin").textContent = "Minimum order · " + c.min_order;
+        $("fMin").hidden = false;
+      }
+    }
+
     if(c.phone){
       $("callBtn").href = "tel:" + c.phone;
       $("telLink").href = "tel:" + c.phone;
@@ -792,9 +923,11 @@ async function loadLiveMenu(){
   }
 
   render();
+  publishStructuredData();
 }
 
 loadLiveMenu().catch(err => console.warn("Live menu unavailable, showing the built-in copy.", err));
 </script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
