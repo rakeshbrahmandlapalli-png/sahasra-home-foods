@@ -277,22 +277,20 @@
         <div class="grid" style="grid-template-columns:1fr 1fr">
           <div class="field">
             <label for="s_hours">Opening hours</label>
-            <input id="s_hours" data-s="hours" placeholder="8 am to 8 pm, every day">
+            <input id="s_hours" data-s="hours">
           </div>
           <div class="field">
             <label for="s_min">Minimum order</label>
-            <input id="s_min" data-s="min_order" placeholder="No minimum">
+            <input id="s_min" data-s="min_order">
           </div>
         </div>
         <div class="field">
           <label for="s_delivery">Where you deliver</label>
-          <input id="s_delivery" data-s="delivery" placeholder="Manikonda and nearby areas">
-          <p class="hint">Leave any of these empty and the site simply does not show that line.</p>
+          <input id="s_delivery" data-s="delivery">
         </div>
         <div class="field" style="margin:0">
           <label for="s_note">How much notice you need, shown at the bottom of the menu</label>
-          <textarea id="s_note" data-s="lead_time"
-            placeholder="Same day for small orders. Two days for 2 kg or more."></textarea>
+          <textarea id="s_note" data-s="lead_time"></textarea>
         </div>
       </div>
     </div>
@@ -306,24 +304,20 @@
       <div class="grid" style="grid-template-columns:1fr 1fr">
         <div class="field">
           <label for="s_legal">Registered business name</label>
-          <input id="s_legal" data-s="legal_name" placeholder="Sahasra Home Foods">
+          <input id="s_legal" data-s="legal_name">
         </div>
         <div class="field">
           <label for="s_fssai">FSSAI registration number</label>
-          <input id="s_fssai" data-s="fssai" class="num" placeholder="14 digits">
-          <p class="hint">Required on a food business website. Apply at foscos.fssai.gov.in
-             if you do not have one. Left empty, the site shows no FSSAI line at all.</p>
+          <input id="s_fssai" data-s="fssai" class="num">
         </div>
       </div>
       <div class="field">
         <label for="s_addr">Full address</label>
-        <input id="s_addr" data-s="address" placeholder="House, street, Manikonda, Hyderabad, Telangana – 500089">
+        <input id="s_addr" data-s="address">
       </div>
       <div class="field">
         <label for="s_allerg">Allergy information</label>
         <textarea id="s_allerg" data-s="allergens"></textarea>
-        <p class="hint">Shown as a highlighted notice. Your food involves nuts, sesame,
-           wheat, milk and ghee — say so plainly.</p>
       </div>
       <div class="field" style="margin:0">
         <label for="s_terms">Ordering, cancellation, prices and privacy</label>
@@ -545,13 +539,13 @@ function drawSections(){
             <input value="${esc(s.name)}" data-sec="${s.id}" data-f="name"></div>
           <div class="field"><label>Telugu name</label>
             <input class="te" value="${esc(s.name_te || "")}" data-sec="${s.id}" data-f="name_te"
-                   placeholder="మిఠాయిలు"></div>
+                  ></div>
           <div class="field"><label>Note under the name</label>
-            <input value="${esc(s.note)}" data-sec="${s.id}" data-f="note" placeholder="Priced per kilogram"></div>
+            <input value="${esc(s.note)}" data-sec="${s.id}" data-f="note"></div>
         </div>
         <div class="grid" style="grid-template-columns:1fr 1fr">
           <div class="field"><label>Sold by</label>
-            <input value="${esc(s.unit)}" data-sec="${s.id}" data-f="unit" placeholder="kg">
+            <input value="${esc(s.unit)}" data-sec="${s.id}" data-f="unit">
             <p class="hint">kg, pack, bowl&hellip;</p></div>
           <div class="field"><label>Each tap adds</label>
             <input class="num" value="${esc(s.step)}" data-sec="${s.id}" data-f="step" inputmode="decimal">
