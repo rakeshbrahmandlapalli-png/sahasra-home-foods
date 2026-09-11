@@ -480,15 +480,19 @@ function drawSections(){
       <header data-toggle>
         <span class="chev">&#9660;</span>
         <h3>${esc(s.name)}</h3>
+        ${s.name_te ? `<span class="meta te">${esc(s.name_te)}</span>` : ""}
         <span class="meta">${mine.length} item${mine.length === 1 ? "" : "s"}${s.visible ? "" : " &middot; hidden"}</span>
         <span class="spacer"></span>
         <button class="icon" type="button" data-secup="${s.id}" ${i === 0 ? "disabled" : ""} title="Move up">&#8593;</button>
         <button class="icon" type="button" data-secdown="${s.id}" ${i === SECTIONS.length - 1 ? "disabled" : ""} title="Move down">&#8595;</button>
       </header>
       <div class="body">
-        <div class="grid" style="grid-template-columns:minmax(0,2fr) minmax(0,3fr);padding:14px 0 2px">
+        <div class="grid" style="grid-template-columns:minmax(0,2fr) minmax(0,2fr) minmax(0,3fr);padding:14px 0 2px">
           <div class="field"><label>Section name</label>
             <input value="${esc(s.name)}" data-sec="${s.id}" data-f="name"></div>
+          <div class="field"><label>Telugu name</label>
+            <input class="te" value="${esc(s.name_te || "")}" data-sec="${s.id}" data-f="name_te"
+                   placeholder="మిఠాయిలు"></div>
           <div class="field"><label>Note under the name</label>
             <input value="${esc(s.note)}" data-sec="${s.id}" data-f="note" placeholder="Priced per kilogram"></div>
         </div>
@@ -572,7 +576,7 @@ document.addEventListener("change", async e => {
     if(f === "name") patch.slug = slugify(v);
     if(await run(db.from("sections").update(patch).eq("id", s.id), "Saved")){
       Object.assign(s, patch);
-      if(f === "name" || f === "visible") drawSections();
+      if(f === "name" || f === "name_te" || f === "visible") drawSections();
     }
     return;
   }

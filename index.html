@@ -72,10 +72,12 @@
     color:var(--ink-2);line-height:1.35;
   }
   .top .callbtn{
-    margin-left:auto;flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+    margin-left:auto;flex:0 0 auto;display:inline-flex;align-items:center;
     border:1px solid var(--line);background:var(--bg);color:var(--ink);
-    border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;font-weight:600;
-    text-decoration:none;
+    border-radius:7px;padding:8px 13px;text-decoration:none;
+    font-family:var(--sans);font-size:10.5px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;
+    transition:border-color .15s,color .15s;
   }
   .top .callbtn:active{background:var(--bg-2)}
 
@@ -113,9 +115,13 @@
     margin:0;font-family:var(--serif);font-size:24px;font-weight:600;
     letter-spacing:-.01em;line-height:1.1;
   }
+  .sechead .ste{
+    font-family:var(--telugu);font-size:15px;font-weight:500;
+    color:var(--brand);line-height:1.1;
+  }
   .sechead span{
-    font-size:9.5px;color:var(--ink-3);font-weight:700;
-    letter-spacing:.14em;text-transform:uppercase;
+    margin-left:auto;font-size:9.5px;color:var(--ink-3);font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
   }
   .secnote{
     margin:0 0 10px;font-size:12px;color:var(--ink-2);
@@ -204,14 +210,29 @@
 
   /* ── footer ─────────────────────────────────────── */
   footer{
-    margin-top:32px;border-top:1px solid var(--line);background:var(--bg-2);
-    padding:24px var(--pad) 32px;
+    margin-top:44px;border-top:1px solid var(--line);background:var(--bg-2);
+    padding:34px var(--pad) 40px;
   }
-  footer h4{margin:0 0 10px;font-size:13px;font-weight:650;letter-spacing:.04em;
-    text-transform:uppercase;color:var(--ink-3)}
-  footer p{margin:0 0 6px;font-size:14px;color:var(--ink-2)}
-  footer a{color:var(--ink);font-weight:600;text-decoration:none}
-  .fnote{margin-top:18px;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+  .fmark{
+    font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink);
+    margin:0 0 4px;letter-spacing:-.005em;
+  }
+  .fmark + p{
+    margin:0 0 26px;font-size:12px;color:var(--ink-3);letter-spacing:.01em;
+  }
+  .fgrid{display:grid;gap:22px 30px;grid-template-columns:1fr}
+  @media (min-width:520px){ .fgrid{grid-template-columns:1fr 1fr} }
+  footer h4{
+    margin:0 0 8px;font-family:var(--sans);font-size:9.5px;font-weight:700;
+    letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);
+  }
+  footer p{margin:0 0 5px;font-size:14px;color:var(--ink-2);line-height:1.5}
+  footer a{color:var(--ink);font-weight:600;text-decoration:none;
+    border-bottom:1px solid var(--line);padding-bottom:1px}
+  .fnote{
+    margin:28px 0 0;padding-top:20px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--ink-3);line-height:1.6;max-width:56ch;
+  }
 
   /* ── order bar ──────────────────────────────────── */
   .bar{
@@ -307,11 +328,21 @@
 <main class="wrap" id="menu"></main>
 
 <footer class="wrap">
-  <h4>Order &amp; enquiries</h4>
-  <p>WhatsApp · <a id="waLink" href="https://wa.me/919515362514">+91 95153 62514</a></p>
-  <p>Phone · <a id="telLink" href="tel:+917207806223">72078 06223</a></p>
-  <h4 style="margin-top:20px">Area</h4>
-  <p id="areaText">Manikonda, Hyderabad</p>
+  <p class="fmark" id="footName">Sahasra Home Foods</p>
+  <p>Homemade, to order</p>
+
+  <div class="fgrid">
+    <div>
+      <h4>Order &amp; enquiries</h4>
+      <p>WhatsApp · <a id="waLink" href="https://wa.me/919515362514">+91 95153 62514</a></p>
+      <p>Phone · <a id="telLink" href="tel:+917207806223">72078 06223</a></p>
+    </div>
+    <div>
+      <h4>Where we cook</h4>
+      <p id="areaText">Manikonda, Hyderabad</p>
+    </div>
+  </div>
+
   <p class="fnote" id="footNote">
     Everything is cooked to order in small batches, so please allow time for
     larger quantities. Bulk and festival orders welcome.
@@ -434,6 +465,17 @@ const key  = (s,i) => s + ":" + i;
 const $    = id => document.getElementById(id);
 
 const rupees = n => "₹" + Math.round(n).toLocaleString("en-IN");
+
+/* The database holds numbers the way a machine needs them (919515362514).
+   People read them in fives. Dialling still uses the raw value. */
+function prettyPhone(v){
+  const d = String(v || "").replace(/[^0-9]/g, "");
+  let m = d.match(/^91(\d{5})(\d{5})$/);
+  if(m) return "+91 " + m[1] + " " + m[2];
+  m = d.match(/^(\d{5})(\d{5})$/);
+  if(m) return m[1] + " " + m[2];
+  return v;
+}
 const qtyText = (q, unit) =>
   unit === "kg" ? (Number.isInteger(q) ? q + " kg" : q + " kg")
                 : q + " " + unit + (q > 1 ? "s" : "");
@@ -444,7 +486,11 @@ function build(){
 
   $("menu").innerHTML = MENU.map(s => `
     <section id="${s.id}" data-sec="${s.id}">
-      <div class="sechead"><h2>${s.name}</h2><span>${s.items.length} items</span></div>
+      <div class="sechead">
+        <h2>${s.name}</h2>
+        ${s.te ? `<span class="ste">${s.te}</span>` : ""}
+        <span>${s.items.length} items</span>
+      </div>
       <p class="secnote">${s.note}</p>
       ${s.items.map((it,i) => row(s,it,i)).join("")}
     </section>`).join("") + `<div class="empty" id="noHits" hidden><b>Nothing matched that</b>Try a shorter word, or browse the sections above.</div>`;
@@ -649,6 +695,7 @@ async function loadLiveMenu(){
   MENU = secs.data.map(s => ({
     id:   s.slug,
     name: s.name,
+    te:   s.name_te || "",
     note: s.note || "",
     unit: s.unit || "kg",
     step: Number(s.step) || 1,
@@ -669,6 +716,7 @@ async function loadLiveMenu(){
     WHATSAPP = c.whatsapp || WHATSAPP;
     const set = (id, txt) => { const el = $(id); if(el && txt) el.textContent = txt; };
     set("shopName", c.shop_name);
+    set("footName", c.shop_name);
     set("shopTag",  c.tagline);
     set("areaText", c.area);
     set("footNote", c.footer_note);
@@ -676,11 +724,11 @@ async function loadLiveMenu(){
     if(c.phone){
       $("callBtn").href = "tel:" + c.phone;
       $("telLink").href = "tel:" + c.phone;
-      $("telLink").textContent = c.phone;
+      $("telLink").textContent = prettyPhone(c.phone);
     }
     if(c.whatsapp){
       $("waLink").href = "https://wa.me/" + c.whatsapp;
-      $("waLink").textContent = "+" + c.whatsapp;
+      $("waLink").textContent = prettyPhone(c.whatsapp);
     }
   }
 
