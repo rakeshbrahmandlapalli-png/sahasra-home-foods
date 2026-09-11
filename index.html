@@ -251,6 +251,41 @@
   footer p{margin:0 0 5px;font-size:14px;color:var(--ink-2);line-height:1.5}
   footer a{color:var(--ink);font-weight:600;text-decoration:none;
     border-bottom:1px solid var(--line);padding-bottom:1px}
+  .allergen{
+    margin:26px 0 0;padding:14px 16px;border-radius:9px;
+    background:#fdf4f0;border:1px solid #f0ddd2;
+    font-size:12.5px;color:#6b4a36;line-height:1.6;max-width:62ch;
+  }
+  .allergen b{
+    display:block;font-family:var(--sans);font-size:9.5px;font-weight:700;
+    letter-spacing:.15em;text-transform:uppercase;color:#9a5c39;margin:0 0 5px;
+  }
+  .allergen[hidden]{display:none}
+
+  .legal{
+    margin:26px 0 0;padding-top:20px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--ink-3);
+  }
+  .legal summary{
+    cursor:pointer;font-family:var(--sans);font-size:9.5px;font-weight:700;
+    letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);list-style:none;
+  }
+  .legal summary::-webkit-details-marker{display:none}
+  .legal summary::after{content:" +";font-weight:700}
+  .legal[open] summary::after{content:" 2"}
+  .legal .who{margin:14px 0 4px;font-size:13px;color:var(--ink-2);line-height:1.6}
+  .legal .who b{color:var(--ink);font-weight:600}
+  .legal .terms{
+    margin:12px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.7;
+    white-space:pre-line;max-width:62ch;
+  }
+  .legal .fssai{
+    display:inline-block;margin:8px 0 0;padding:4px 9px;border-radius:5px;
+    background:var(--bg);border:1px solid var(--line);
+    font-family:var(--sans);font-size:11px;font-weight:700;
+    letter-spacing:.06em;color:var(--ink-2);
+  }
+
   .share{
     display:inline-flex;align-items:center;gap:8px;margin:22px 0 0;
     border:1px solid var(--line);background:var(--bg);color:var(--ink);
@@ -418,6 +453,11 @@
     </div>
   </div>
 
+  <div class="allergen" id="allergenBox" hidden>
+    <b>Allergy information</b>
+    <span id="allergenText"></span>
+  </div>
+
   <button class="share" id="share" type="button">
     <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
       <path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"></path>
@@ -425,6 +465,13 @@
     </svg>
     <span id="shareLabel">Share this menu</span>
   </button>
+
+  <details class="legal" id="legalBox" hidden>
+    <summary>Ordering &amp; business details</summary>
+    <p class="who" id="legalWho"></p>
+    <span class="fssai" id="fssaiLine" hidden></span>
+    <p class="terms" id="legalTerms"></p>
+  </details>
 
   <details class="credits">
     <summary>Photo credits</summary>
@@ -898,6 +945,26 @@ async function loadLiveMenu(){
       $("facts").hidden = false;
     }
     if(c.lead_time && c.lead_time.trim()) set("footNote", c.lead_time);
+
+    /* Food-safety and business disclosures. Each part appears only once
+       the shop has filled it in — an empty FSSAI line would be worse
+       than none, because it looks like a number that failed to load. */
+    if(c.allergens && c.allergens.trim()){
+      $("allergenText").textContent = c.allergens;
+      $("allergenBox").hidden = false;
+    }
+    const who = [c.legal_name, c.address].filter(v => v && v.trim());
+    const hasLegal = who.length || (c.fssai && c.fssai.trim()) || (c.terms && c.terms.trim());
+    if(hasLegal){
+      if(who.length) $("legalWho").innerHTML =
+        "<b>" + esc(who[0]) + "</b>" + (who[1] ? "<br>" + esc(who[1]) : "");
+      if(c.fssai && c.fssai.trim()){
+        $("fssaiLine").textContent = "FSSAI " + c.fssai.trim();
+        $("fssaiLine").hidden = false;
+      }
+      if(c.terms && c.terms.trim()) $("legalTerms").textContent = c.terms;
+      $("legalBox").hidden = false;
+    }
     if(c.delivery && c.delivery.trim()){
       $("fDelivery").textContent = "Delivering to " + c.delivery;
       $("fDelivery").hidden = false;
