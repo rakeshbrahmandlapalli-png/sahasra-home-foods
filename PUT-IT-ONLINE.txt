@@ -1,0 +1,106 @@
+═══════════════════════════════════════════════════════════════════════
+ PUTTING THE SITE ON A REAL WEB ADDRESS
+ About 5 minutes. Free. No card.
+═══════════════════════════════════════════════════════════════════════
+
+ I cannot do this part for you — it needs you signed in, and I am not
+ allowed to type passwords on your behalf. You already have the account.
+
+
+───────────────────────────────────────────────────────────────────────
+ FIRST: MAKE THE UPLOAD FOLDER
+───────────────────────────────────────────────────────────────────────
+ ALREADY DONE — the folder  Desktop\SAHASRA-LIVE  is waiting for you.
+
+ It holds only the three files that belong online:
+     index.html    admin.html    menu-source.js
+
+ Your working notes (setup/, README.txt, this file) were deliberately
+ left out. Nothing in them is secret, but they have no business being on
+ a customer-facing website.
+
+
+───────────────────────────────────────────────────────────────────────
+ THEN: DROP IT ON VERCEL
+───────────────────────────────────────────────────────────────────────
+ 1. Go to  https://vercel.com/drop
+ 2. Drag the SAHASRA-LIVE folder onto the page.
+ 3. It asks which team to deploy to, and for a project name.
+        name it:  sahasra-home-foods
+        team:     your own — see the box below
+ 4. Press Deploy. About twenty seconds.
+
+ You get an address like  https://sahasra-home-foods.vercel.app
+ It is live worldwide the moment it appears.
+
+ There is no build step — three plain HTML files with no package.json,
+ so Vercel serves them exactly as they are.
+
+ The edit screen will be at  /admin.html
+ e.g.  https://sahasra-home-foods.vercel.app/admin.html
+
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  WHICH ACCOUNT — USE YOUR OWN                                   │
+  │                                                                 │
+  │  Your normal Vercel account. The one you log into with GitHub.  │
+  │  Do not make a new one. You do not need an account per project  │
+  │  and juggling several is a worse risk than what it avoids.      │
+  │                                                                 │
+  │  Separate PROJECTS, not separate ACCOUNTS.                      │
+  │                                                                 │
+  │  The one exception, and it is a real one: if the family buys a  │
+  │  DOMAIN, it goes in THEIR name on THEIR card. Code and hosting  │
+  │  move in minutes. A domain someone else owns does not.          │
+  └─────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────
+ IF YOU PREFER NETLIFY INSTEAD
+───────────────────────────────────────────────────────────────────────
+ Identical idea:  https://app.netlify.com/drop  — drag the folder on.
+ Note that Netlify deletes the site after an hour unless you sign up
+ to claim it. Vercel makes you pick the account up front instead.
+ Either is fine. Use whichever you will actually remember the login to.
+
+
+───────────────────────────────────────────────────────────────────────
+ WHEN YOU CHANGE SOMETHING LATER
+───────────────────────────────────────────────────────────────────────
+ Prices, names, photos → use the edit screen at /admin.html . Nothing
+ to re-upload. That is the whole point of the database.
+
+ Only if I change the CODE do you re-upload: go back to
+ https://vercel.com/drop , drag the folder again, and give it the SAME
+ project name — it replaces the existing site rather than making a
+ second one.
+
+
+───────────────────────────────────────────────────────────────────────
+ A PROPER DOMAIN (OPTIONAL, COSTS MONEY)
+───────────────────────────────────────────────────────────────────────
+ Something like sahasrahomefoods.com is roughly Rs 900–1,200 a year from
+ Namecheap, GoDaddy or Cloudflare. Vercel connects it for free:
+ Project → Settings → Domains → Add, then follow its instructions.
+
+ The family should buy and own this, not you. A business that does not
+ own its own domain cannot leave whoever does.
+
+
+───────────────────────────────────────────────────────────────────────
+ BEFORE YOU SEND THE LINK TO CUSTOMERS
+───────────────────────────────────────────────────────────────────────
+ The address will work the moment you drop the folder. That does not
+ mean the menu is right. Still unsettled:
+
+   • Five items have no price and say "Call for price"
+   • One snack was unreadable and is missing from the site entirely
+   • Poha Mixture Rs 680/kg is unconfirmed (could be 630)
+   • Dry Fruit Laddu — flyer says 1800, notes say 1850
+   • The order number is assumed to be 95153 62514
+   • No Telugu reader has checked the Telugu spellings
+
+ Wrong prices on a real food business are not a cosmetic problem —
+ someone orders at the wrong price and the family has to honour it or
+ argue with a customer. Send the link to the family first, not to
+ customers.

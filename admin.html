@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Menu editor — Sahasra Home Foods</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%239d1c20'/%3E%3Ctext x='32' y='46' font-family='Segoe UI,Arial,sans-serif' font-size='40' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16181d; --ink-2:#5c6069; --ink-3:#8c9099;
+    --line:#e8e9ec; --line-2:#f2f3f5;
+    --bg:#ffffff; --bg-2:#f7f8fa;
+    --brand:#9d1c20; --brand-ink:#7d1518;
+    --ok:#0a8043; --danger:#b91c1c;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --telugu:"Noto Sans Telugu",var(--sans);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--sans);color:var(--ink);background:var(--bg-2);
+    font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 16px}
+  .num{font-variant-numeric:tabular-nums}
+  .te{font-family:var(--telugu)}
+  h1,h2,h3{letter-spacing:-.2px}
+  [hidden]{display:none !important}
+
+  /* ── shell ─────────────────────────────────────── */
+  .topbar{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+  .topbar .row{display:flex;align-items:center;gap:12px;padding:12px 0}
+  .mark{
+    width:36px;height:36px;flex:0 0 36px;border-radius:9px;background:var(--brand);
+    color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;
+  }
+  .topbar h1{margin:0;font-size:15.5px;font-weight:650;line-height:1.2}
+  .topbar p{margin:1px 0 0;font-size:12.5px;color:var(--ink-2);line-height:1.2}
+  .spacer{margin-left:auto}
+
+  .tabs{display:flex;gap:6px;padding:0 0 10px}
+  .tabs button{
+    border:1px solid var(--line);background:var(--bg);color:var(--ink-2);
+    border-radius:999px;padding:7px 15px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .tabs button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+  /* ── buttons ───────────────────────────────────── */
+  button{font:inherit}
+  .btn{
+    border:1px solid var(--line);background:var(--bg);color:var(--ink);
+    border-radius:9px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer;
+    text-decoration:none;display:inline-block;
+  }
+  .btn:hover{background:var(--bg-2)}
+  .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.primary:hover{background:var(--brand-ink)}
+  .btn.ghost{border-color:transparent;color:var(--ink-2)}
+  .btn.ghost:hover{background:var(--line-2)}
+  .btn.danger{color:var(--danger)}
+  .btn.danger:hover{background:#fef2f2}
+  .btn.sm{padding:6px 11px;font-size:12.5px}
+  .btn[disabled]{opacity:.5;cursor:default}
+  .icon{
+    width:30px;height:30px;display:grid;place-items:center;padding:0;
+    border:1px solid var(--line);background:var(--bg);border-radius:8px;
+    color:var(--ink-2);font-size:13px;line-height:1;cursor:pointer;
+  }
+  .icon:hover{background:var(--bg-2);color:var(--ink)}
+  .icon[disabled]{opacity:.3;cursor:default}
+
+  /* ── fields ────────────────────────────────────── */
+  label{display:block;font-size:11.5px;font-weight:650;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--ink-3);margin:0 0 5px}
+  input,textarea{
+    width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);
+    border-radius:9px;padding:10px 12px;font:inherit;font-size:14.5px;outline:none;
+  }
+  input:focus,textarea:focus{border-color:var(--ink-3)}
+  textarea{resize:vertical;min-height:74px;line-height:1.5}
+  .field{margin:0 0 14px}
+  .grid{display:grid;gap:12px}
+  .hint{margin:5px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.45}
+  .check{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-2);
+    cursor:pointer;text-transform:none;letter-spacing:0;font-weight:400;margin:0}
+  .check input{width:16px;height:16px;flex:0 0 16px;accent-color:var(--brand)}
+
+  /* ── cards ─────────────────────────────────────── */
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:18px;margin:0 0 14px}
+  .card > h2{margin:0 0 16px;font-size:16px;font-weight:650}
+
+  .sec{background:var(--bg);border:1px solid var(--line);border-radius:12px;margin:0 0 14px;overflow:hidden}
+  .sec > header{
+    display:flex;align-items:center;gap:10px;padding:13px 16px;
+    border-bottom:1px solid var(--line-2);cursor:pointer;
+  }
+  .sec > header h3{margin:0;font-size:15px;font-weight:650}
+  .sec > header .meta{font-size:12.5px;color:var(--ink-3);font-weight:500}
+  .sec.closed > .body{display:none}
+  .sec.closed > header{border-bottom:0}
+  .sec .body{padding:4px 16px 16px}
+  .chev{transition:transform .18s;color:var(--ink-3);font-size:11px}
+  .sec.closed .chev{transform:rotate(-90deg)}
+  .off{opacity:.5}
+
+  /* ── item rows ─────────────────────────────────── */
+  .item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-2);align-items:flex-start}
+  .item:last-child{border-bottom:0}
+  .item .pic{flex:0 0 76px}
+  .item .pic .box{
+    width:76px;height:76px;border-radius:10px;border:1px dashed var(--line);
+    background:var(--bg-2);display:grid;place-items:center;overflow:hidden;
+    cursor:pointer;color:var(--ink-3);font-size:11.5px;text-align:center;line-height:1.3;
+  }
+  .item .pic .box:hover{border-color:var(--ink-3);color:var(--ink-2)}
+  .item .pic img{width:100%;height:100%;object-fit:cover;display:block}
+  .item .pic .rm{width:100%;margin-top:6px;font-size:11.5px;padding:4px 0}
+  .item .fields{flex:1 1 auto;min-width:0;display:grid;gap:10px;
+    grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) 120px}
+  .item .tools{flex:0 0 auto;display:flex;flex-direction:column;gap:6px;padding-top:2px}
+  .item .foot{grid-column:1/-1;display:flex;align-items:center;gap:16px}
+
+  @media (max-width:720px){
+    .item .fields{grid-template-columns:1fr 1fr}
+    .item .fields .price-f{grid-column:1/-1}
+    .grid{grid-template-columns:1fr !important}
+  }
+
+  /* ── login ─────────────────────────────────────── */
+  .centre{min-height:100dvh;display:grid;place-items:center;padding:24px 16px}
+  .panel{width:100%;max-width:400px;background:var(--bg);border:1px solid var(--line);
+    border-radius:14px;padding:26px}
+  .panel .mark{width:44px;height:44px;border-radius:11px;font-size:18px;margin:0 0 16px}
+  .panel h2{margin:0 0 4px;font-size:18px;font-weight:650}
+  .panel .sub{margin:0 0 22px;font-size:13.5px;color:var(--ink-2)}
+  .panel .btn{width:100%;padding:12px;text-align:center}
+
+  .msg{border-radius:9px;padding:11px 13px;font-size:13.5px;margin:0 0 16px;line-height:1.5}
+  .msg.bad{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+  .msg.note{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+
+  /* ── save indicator ────────────────────────────── */
+  .save{
+    position:fixed;left:50%;bottom:22px;transform:translate(-50%,160%);
+    background:var(--ink);color:#fff;border-radius:999px;padding:9px 18px;
+    font-size:13.5px;font-weight:600;z-index:60;
+    transition:transform .22s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 6px 20px rgba(16,18,22,.18);max-width:90vw;
+  }
+  .save.on{transform:translate(-50%,0)}
+  .save.bad{background:var(--danger)}
+
+  .secbar{
+    display:flex;align-items:center;gap:14px;
+    padding:12px 0;margin:2px 0 4px;border-top:1px solid var(--line-2);
+  }
+
+  /* ── on a mouse, things respond to the pointer ──── */
+  @media (hover:hover) and (pointer:fine){
+    .sec > header:hover{background:var(--bg-2)}
+    .item:hover .pic .box{border-color:var(--ink-3)}
+  }
+
+  /* ── keyboard users can see where they are ───────── */
+  :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:8px}
+  input:focus-visible,textarea:focus-visible{outline-offset:0}
+
+  ::selection{background:rgba(157,28,32,.14)}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{transition-duration:.01ms !important}
+  }
+
+  /* ── one column once it gets tight ──────────────── */
+  @media (max-width:560px){
+    .item{gap:12px}
+    .item .fields{grid-template-columns:1fr}
+    .item .foot{flex-wrap:wrap;gap:10px}
+    .item .tools{flex-direction:row}
+    .sec .body{padding:4px 13px 14px}
+    .wrap{padding:0 13px}
+    .secbar{flex-wrap:wrap}
+  }
+
+  .pagefoot{padding:10px 0 44px;font-size:12.5px;color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<!-- ── not connected yet ──────────────────────────────────────── -->
+<div class="centre" id="gate" hidden>
+  <div class="panel">
+    <div class="mark">S</div>
+    <h2>Not connected yet</h2>
+    <p class="sub">The menu editor needs the database details before it can do anything.</p>
+    <div class="msg note">
+      Open <b>setup/SETUP-GUIDE.txt</b> in this folder and work through steps 1 to 6,
+      then send the two lines it gives you to Claude to put into the page.
+    </div>
+  </div>
+</div>
+
+<!-- ── sign in ────────────────────────────────────────────────── -->
+<div class="centre" id="login" hidden>
+  <form class="panel" id="loginForm">
+    <div class="mark">S</div>
+    <h2>Menu editor</h2>
+    <p class="sub">Sign in to change prices, names and photos.</p>
+    <div class="msg bad" id="loginErr" hidden></div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="pw">Password</label>
+      <input id="pw" type="password" autocomplete="current-password" required>
+    </div>
+    <button class="btn primary" id="loginBtn" type="submit">Sign in</button>
+  </form>
+</div>
+
+<!-- ── the editor ─────────────────────────────────────────────── -->
+<div id="app" hidden>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="row">
+        <div class="mark">S</div>
+        <div>
+          <h1>Menu editor</h1>
+          <p id="who"></p>
+        </div>
+        <div class="spacer"></div>
+        <a class="btn sm" href="/" target="_blank" rel="noopener">View site</a>
+        <button class="btn sm ghost" id="signout" type="button">Sign out</button>
+      </div>
+      <div class="tabs">
+        <button type="button" data-tab="menu" aria-selected="true">Menu</button>
+        <button type="button" data-tab="shop" aria-selected="false">Shop details</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap" style="padding-top:18px">
+    <div id="paneMenu">
+      <div id="sections"></div>
+      <button class="btn" data-addsection type="button">+ Add a section</button>
+    </div>
+
+    <div id="paneShop" hidden>
+      <div class="card">
+        <h2>Shop details</h2>
+        <div class="grid" style="grid-template-columns:1fr 1fr">
+          <div class="field"><label for="s_name">Shop name</label><input id="s_name" data-s="shop_name"></div>
+          <div class="field"><label for="s_area">Area</label><input id="s_area" data-s="area"></div>
+        </div>
+        <div class="field">
+          <label for="s_tag">Tagline, under the name</label>
+          <input id="s_tag" data-s="tagline">
+        </div>
+        <div class="grid" style="grid-template-columns:1fr 1fr">
+          <div class="field">
+            <label for="s_wa">WhatsApp number for orders</label>
+            <input id="s_wa" data-s="whatsapp" class="num" inputmode="numeric">
+            <p class="hint">Country code first, no + and no spaces. India: 91 then the ten digits.</p>
+          </div>
+          <div class="field">
+            <label for="s_ph">Phone number for the Call button</label>
+            <input id="s_ph" data-s="phone" class="num" inputmode="tel">
+            <p class="hint">This one may start with +.</p>
+          </div>
+        </div>
+        <div class="field" style="margin:0">
+          <label for="s_note">Note at the bottom of the menu</label>
+          <textarea id="s_note" data-s="footer_note"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <p class="pagefoot">Changes save on their own the moment you finish typing in a box.</p>
+  </main>
+</div>
+
+<div class="save" id="save"></div>
+<input type="file" id="picker" accept="image/*" hidden>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   WHERE THE MENU LIVES
+
+   Both values are meant to be public and can only READ the menu.
+   NEVER put the SECRET key (sb_secret_...) or any password here.
+
+   The key below is a LEGACY "anon" key. It works, but Supabase retires
+   this format at the end of 2026. Swapping it for the newer publishable
+   key (Project Settings > API Keys) is a one-line change in both files.
+
+   This sits inside the page on purpose. It used to be a separate file,
+   but a separate file can be blocked by an ad blocker or left out of an
+   upload — and when that happened the site fell back to its built-in
+   menu without a word, which is exactly the kind of silent failure that
+   wastes an afternoon. Inline, there is nothing to block or forget.
+
+   NOTE: this block appears in BOTH index.html and admin.html.
+   If you change it, change it in both.
+   ═══════════════════════════════════════════════════════════════════ */
+window.SAHASRA_CONFIG = {
+  url:     "https://yziwrjghzqheuftywecf.supabase.co",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6aXdyamdoenFoZXVmdHl3ZWNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwODE5NDIsImV4cCI6MjEwNDY1Nzk0Mn0.6V5bNfuTsFUVRSnkNPSfuLcTiEgEXoNF0T9xa90BN9E",
+};
+</script>
+<script>
+const $   = id => document.getElementById(id);
+const cfg = window.SAHASRA_CONFIG || {};
+let db = null, SECTIONS = [], ITEMS = [], SETTINGS = null, pickingFor = null;
+
+const esc = s => String(s == null ? "" : s)
+  .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+const slugify = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")
+  || ("section-" + Date.now().toString(36));
+
+let toastTimer = null;
+function toast(text, bad){
+  const el = $("save");
+  el.textContent = text;
+  el.classList.toggle("bad", !!bad);
+  el.classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("on"), bad ? 6000 : 1600);
+}
+
+async function run(promise, okText){
+  const { error } = await promise;
+  if(error){ toast(error.message || "Could not save", true); return false; }
+  if(okText) toast(okText);
+  return true;
+}
+
+/* Shrink a phone photo to a square before uploading, so the menu stays
+   quick on Indian mobile data. 4 MB in, roughly 100 KB out. */
+function shrink(file, max){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const side = Math.min(img.width, img.height);
+      const sx = (img.width - side) / 2, sy = (img.height - side) / 2;
+      const c = document.createElement("canvas");
+      c.width = c.height = Math.min(side, max);
+      c.getContext("2d").drawImage(img, sx, sy, side, side, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(img.src);
+      c.toBlob(b => b ? resolve(b) : reject(new Error("Could not read that picture")), "image/jpeg", 0.82);
+    };
+    img.onerror = () => { URL.revokeObjectURL(img.src); reject(new Error("That file is not a picture")); };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+/* ── start up ───────────────────────────────────────────────── */
+if(!window.SAHASRA_CONFIG){
+  /* The settings block at the top of this page never ran. Should be all but
+     impossible now it is inline, but say so plainly rather than showing the
+     "not set up yet" screen, which would send you hunting the wrong problem. */
+  $("gate").hidden = false;
+  $("gate").querySelector("h2").textContent = "Settings did not load";
+  $("gate").querySelector(".sub").textContent =
+    "This page does not know where the menu lives, so it cannot sign you in.";
+  $("gate").querySelector(".msg").innerHTML =
+    "The settings block near the top of admin.html did not run. Most likely the file " +
+    "was edited and something in that block was broken. Send this message to Claude.";
+}else if(!cfg.url || !cfg.anonKey || !window.supabase){
+  $("gate").hidden = false;
+}else{
+  db = window.supabase.createClient(cfg.url, cfg.anonKey);
+  db.auth.getSession().then(({ data }) =>
+    data.session ? start(data.session) : ($("login").hidden = false));
+}
+
+$("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = $("loginBtn"), err = $("loginErr");
+  btn.disabled = true; btn.textContent = "Signing in…"; err.hidden = true;
+  const { data, error } = await db.auth.signInWithPassword({
+    email: $("email").value.trim(), password: $("pw").value,
+  });
+  btn.disabled = false; btn.textContent = "Sign in";
+  if(error){ err.textContent = error.message; err.hidden = false; return; }
+  $("pw").value = "";
+  $("login").hidden = true;
+  start(data.session);
+});
+
+$("signout").addEventListener("click", async () => { await db.auth.signOut(); location.reload(); });
+
+async function start(session){
+  /* Signing in is not the same as being allowed to edit. The database only
+     accepts changes from people listed in the admins table, so check that
+     here and say so plainly rather than letting every save fail. */
+  const { data: me, error: meErr } =
+    await db.from("admins").select("user_id").eq("user_id", session.user.id).maybeSingle();
+
+  /* A database error here is NOT the same as "you are not an admin", and
+     saying so cost an evening once. Show what actually went wrong. */
+  if(meErr){
+    $("login").hidden = true;
+    $("gate").hidden = false;
+    $("gate").querySelector("h2").textContent = "Could not check your permissions";
+    $("gate").querySelector(".sub").textContent =
+      "Signing in worked. The database refused the question that follows it, so this is a database problem, not your account.";
+    $("gate").querySelector(".msg").textContent = meErr.message;
+    return;
+  }
+
+  if(!me){
+    $("login").hidden = true;
+    $("gate").hidden = false;
+    $("gate").querySelector("h2").textContent = "Not allowed to edit";
+    $("gate").querySelector(".sub").textContent =
+      "You are signed in as " + session.user.email + ", but that account has not been given permission to change the menu.";
+    $("gate").querySelector(".msg").innerHTML =
+      "Whoever runs the Supabase project needs to add you — it is step <b>5b</b> in " +
+      "<b>setup/SETUP-GUIDE.txt</b>.";
+    const out = document.createElement("button");
+    out.className = "btn"; out.style.marginTop = "16px"; out.textContent = "Sign out";
+    out.onclick = async () => { await db.auth.signOut(); location.reload(); };
+    $("gate").querySelector(".panel").appendChild(out);
+    return;
+  }
+  $("who").textContent = session.user.email;
+  $("app").hidden = false;
+  await loadAll();
+}
+
+async function loadAll(){
+  const [secs, items, setts] = await Promise.all([
+    db.from("sections").select("*").order("sort"),
+    db.from("items").select("*").order("sort"),
+    db.from("settings").select("*").eq("id", 1).maybeSingle(),
+  ]);
+  if(secs.error || items.error) return toast((secs.error || items.error).message, true);
+  SECTIONS = secs.data || [];
+  ITEMS    = items.data || [];
+  SETTINGS = setts.data || null;
+  drawSections();
+  drawSettings();
+}
+
+/* ── shop details ───────────────────────────────────────────── */
+function drawSettings(){
+  if(!SETTINGS) return;
+  document.querySelectorAll("[data-s]").forEach(el => { el.value = SETTINGS[el.dataset.s] || ""; });
+}
+
+document.querySelectorAll("[data-s]").forEach(el => {
+  el.addEventListener("change", async () => {
+    if(!SETTINGS) return;
+    const field = el.dataset.s;
+    let v = el.value.trim();
+    if(field === "whatsapp") v = v.replace(/[^0-9]/g, "");
+    el.value = v;
+    if(await run(db.from("settings").update({ [field]: v }).eq("id", 1), "Saved")) SETTINGS[field] = v;
+  });
+});
+
+/* ── draw the menu ──────────────────────────────────────────── */
+function drawSections(){
+  const seen = !!document.querySelector(".sec");
+  const open = new Set([...document.querySelectorAll(".sec:not(.closed)")].map(el => el.dataset.id));
+
+  $("sections").innerHTML = SECTIONS.map((s, i) => {
+    const mine = ITEMS.filter(it => it.section_id === s.id);
+    const shut = (seen && open.has(s.id)) ? "" : "closed";
+    return `
+    <div class="sec ${shut} ${s.visible ? "" : "off"}" data-id="${s.id}">
+      <header data-toggle>
+        <span class="chev">&#9660;</span>
+        <h3>${esc(s.name)}</h3>
+        <span class="meta">${mine.length} item${mine.length === 1 ? "" : "s"}${s.visible ? "" : " &middot; hidden"}</span>
+        <span class="spacer"></span>
+        <button class="icon" type="button" data-secup="${s.id}" ${i === 0 ? "disabled" : ""} title="Move up">&#8593;</button>
+        <button class="icon" type="button" data-secdown="${s.id}" ${i === SECTIONS.length - 1 ? "disabled" : ""} title="Move down">&#8595;</button>
+      </header>
+      <div class="body">
+        <div class="grid" style="grid-template-columns:minmax(0,2fr) minmax(0,3fr);padding:14px 0 2px">
+          <div class="field"><label>Section name</label>
+            <input value="${esc(s.name)}" data-sec="${s.id}" data-f="name"></div>
+          <div class="field"><label>Note under the name</label>
+            <input value="${esc(s.note)}" data-sec="${s.id}" data-f="note" placeholder="Priced per kilogram"></div>
+        </div>
+        <div class="grid" style="grid-template-columns:1fr 1fr">
+          <div class="field"><label>Sold by</label>
+            <input value="${esc(s.unit)}" data-sec="${s.id}" data-f="unit" placeholder="kg">
+            <p class="hint">kg, pack, bowl&hellip;</p></div>
+          <div class="field"><label>Each tap adds</label>
+            <input class="num" value="${esc(s.step)}" data-sec="${s.id}" data-f="step" inputmode="decimal">
+            <p class="hint">0.5 for half kilos, 1 for whole ones.</p></div>
+        </div>
+        <div class="secbar">
+          <label class="check">
+            <input type="checkbox" ${s.visible ? "checked" : ""} data-sec="${s.id}" data-f="visible"> Show on the site
+          </label>
+          <span class="spacer"></span>
+          <button class="btn sm danger" type="button" data-secdel="${s.id}">Delete section</button>
+        </div>
+
+        <div class="items">${
+          mine.map((it, j) => itemRow(it, j, mine.length)).join("")
+          || `<p class="hint" style="padding:10px 0">No items in this section yet.</p>`
+        }</div>
+        <button class="btn sm" type="button" data-additem="${s.id}" style="margin-top:14px">+ Add an item</button>
+      </div>
+    </div>`;
+  }).join("") || `<div class="card"><p class="hint">No sections yet. Add one below to start the menu.</p></div>`;
+}
+
+function itemRow(it, j, n){
+  const pic = it.photo_url ? `<img src="${esc(it.photo_url)}" alt="">` : `<span>Add<br>photo</span>`;
+  return `
+  <div class="item ${it.available ? "" : "off"}" data-item="${it.id}">
+    <div class="pic">
+      <div class="box" data-photo="${it.id}" title="Choose a picture">${pic}</div>
+      ${it.photo_url ? `<button class="btn sm ghost rm" type="button" data-photodel="${it.id}">Remove</button>` : ""}
+    </div>
+    <div class="fields">
+      <div class="field" style="margin:0">
+        <label>Name</label>
+        <input value="${esc(it.name_en)}" data-it="${it.id}" data-f="name_en">
+      </div>
+      <div class="field" style="margin:0">
+        <label>Telugu name</label>
+        <input class="te" value="${esc(it.name_te)}" data-it="${it.id}" data-f="name_te">
+      </div>
+      <div class="field price-f" style="margin:0">
+        <label>Price</label>
+        <input class="num" value="${it.price === null ? "" : esc(it.price)}"
+               data-it="${it.id}" data-f="price" inputmode="decimal" placeholder="Call for price">
+      </div>
+      <div class="foot">
+        <label class="check">
+          <input type="checkbox" ${it.available ? "checked" : ""} data-it="${it.id}" data-f="available">
+          Available to order
+        </label>
+        <button class="btn sm ghost danger" type="button" data-itemdel="${it.id}">Delete item</button>
+      </div>
+    </div>
+    <div class="tools">
+      <button class="icon" type="button" data-itemup="${it.id}"   ${j === 0 ? "disabled" : ""} title="Move up">&#8593;</button>
+      <button class="icon" type="button" data-itemdown="${it.id}" ${j === n - 1 ? "disabled" : ""} title="Move down">&#8595;</button>
+    </div>
+  </div>`;
+}
+
+/* ── finishing a box saves it ───────────────────────────────── */
+document.addEventListener("change", async e => {
+  const el = e.target;
+
+  if(el.dataset.sec){
+    const s = SECTIONS.find(x => x.id === el.dataset.sec);
+    const f = el.dataset.f;
+    let v = el.type === "checkbox" ? el.checked : el.value.trim();
+    if(f === "step"){
+      v = Number(v);
+      if(!isFinite(v) || v <= 0){ v = 1; el.value = "1"; toast("Steps must be more than zero, set to 1", true); }
+    }
+    if(f === "name" && !v){ el.value = s.name; return; }
+    const patch = { [f]: v };
+    if(f === "name") patch.slug = slugify(v);
+    if(await run(db.from("sections").update(patch).eq("id", s.id), "Saved")){
+      Object.assign(s, patch);
+      if(f === "name" || f === "visible") drawSections();
+    }
+    return;
+  }
+
+  if(el.dataset.it){
+    const it = ITEMS.find(x => x.id === el.dataset.it);
+    const f = el.dataset.f;
+    let v = el.type === "checkbox" ? el.checked : el.value.trim();
+    if(f === "price"){
+      v = v === "" ? null : Number(v.replace(/[^0-9.]/g, ""));
+      if(v !== null && (!isFinite(v) || v < 0)){
+        toast("That price is not a number", true);
+        el.value = it.price === null ? "" : it.price;
+        return;
+      }
+      el.value = v === null ? "" : v;
+    }
+    if(f === "name_en" && !v){ el.value = it.name_en; return; }
+    if(await run(db.from("items").update({ [f]: v }).eq("id", it.id), "Saved")){
+      it[f] = v;
+      if(f === "available") el.closest(".item").classList.toggle("off", !v);
+    }
+  }
+});
+
+/* ── buttons ────────────────────────────────────────────────── */
+document.addEventListener("click", async e => {
+  const t = e.target;
+  const hit = n => t.closest("[data-" + n + "]");
+  let b;
+
+  const tab = t.closest("[data-tab]");
+  if(tab){
+    document.querySelectorAll("[data-tab]").forEach(x => x.setAttribute("aria-selected", x === tab));
+    $("paneMenu").hidden = tab.dataset.tab !== "menu";
+    $("paneShop").hidden = tab.dataset.tab !== "shop";
+    return;
+  }
+
+  const head = t.closest("[data-toggle]");
+  if(head && !t.closest("button")){ head.parentElement.classList.toggle("closed"); return; }
+
+  if((b = hit("additem"))){
+    const sid = b.dataset.additem;
+    const n = ITEMS.filter(i => i.section_id === sid).length;
+    const { data, error } = await db.from("items")
+      .insert({ section_id: sid, name_en: "New item", name_te: "", price: null, sort: n })
+      .select().single();
+    if(error) return toast(error.message, true);
+    ITEMS.push(data); drawSections(); toast("Item added");
+    const el = document.querySelector('[data-it="' + data.id + '"][data-f="name_en"]');
+    if(el){ el.focus(); el.select(); }
+    return;
+  }
+
+  if((b = hit("addsection"))){
+    const { data, error } = await db.from("sections")
+      .insert({ slug: slugify("section-" + Date.now().toString(36)), name: "New section",
+                note: "", unit: "kg", step: 1, sort: SECTIONS.length })
+      .select().single();
+    if(error) return toast(error.message, true);
+    SECTIONS.push(data); drawSections(); toast("Section added");
+    return;
+  }
+
+  if((b = hit("itemdel"))){
+    const it = ITEMS.find(x => x.id === b.dataset.itemdel);
+    if(!confirm('Delete "' + it.name_en + '"? This cannot be undone.')) return;
+    if(!await run(db.from("items").delete().eq("id", it.id), "Deleted")) return;
+    ITEMS = ITEMS.filter(x => x.id !== it.id); drawSections();
+    return;
+  }
+
+  if((b = hit("secdel"))){
+    const s = SECTIONS.find(x => x.id === b.dataset.secdel);
+    const n = ITEMS.filter(i => i.section_id === s.id).length;
+    if(!confirm('Delete the whole "' + s.name + '" section and its ' + n +
+                ' item' + (n === 1 ? "" : "s") + '? This cannot be undone.')) return;
+    if(!await run(db.from("sections").delete().eq("id", s.id), "Deleted")) return;
+    SECTIONS = SECTIONS.filter(x => x.id !== s.id);
+    ITEMS    = ITEMS.filter(i => i.section_id !== s.id);
+    drawSections();
+    return;
+  }
+
+  if((b = hit("itemup")) || (b = hit("itemdown"))){
+    const id  = b.dataset.itemup || b.dataset.itemdown;
+    const dir = b.dataset.itemup ? -1 : 1;
+    const it   = ITEMS.find(x => x.id === id);
+    const list = ITEMS.filter(x => x.section_id === it.section_id);
+    const i = list.indexOf(it), j = i + dir;
+    if(j < 0 || j >= list.length) return;
+    list.splice(j, 0, list.splice(i, 1)[0]);
+    await reorder("items", list);
+    return;
+  }
+
+  if((b = hit("secup")) || (b = hit("secdown"))){
+    const id  = b.dataset.secup || b.dataset.secdown;
+    const dir = b.dataset.secup ? -1 : 1;
+    const i = SECTIONS.findIndex(x => x.id === id), j = i + dir;
+    if(j < 0 || j >= SECTIONS.length) return;
+    SECTIONS.splice(j, 0, SECTIONS.splice(i, 1)[0]);
+    await reorder("sections", SECTIONS);
+    return;
+  }
+
+  if((b = hit("photo"))){ pickingFor = b.dataset.photo; $("picker").click(); return; }
+
+  if((b = hit("photodel"))){
+    const it = ITEMS.find(x => x.id === b.dataset.photodel);
+    if(!await run(db.from("items").update({ photo_url: null }).eq("id", it.id), "Photo removed")) return;
+    it.photo_url = null; drawSections();
+    return;
+  }
+});
+
+async function reorder(table, list){
+  list.forEach((r, k) => { r.sort = k; });
+  const { error } = await db.from(table).upsert(list.map(r => ({ id: r.id, sort: r.sort })));
+  if(error) return toast(error.message, true);
+  drawSections();
+  toast("Order saved");
+}
+
+/* ── photo upload ───────────────────────────────────────────── */
+$("picker").addEventListener("change", async e => {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = "";
+  const id = pickingFor; pickingFor = null;
+  if(!file || !id) return;
+  const it = ITEMS.find(x => x.id === id);
+  if(!it) return;
+
+  toast("Uploading…");
+  try{
+    const blob = await shrink(file, 800);
+    const path = it.id + "-" + Date.now().toString(36) + ".jpg";
+    const up = await db.storage.from("photos")
+      .upload(path, blob, { contentType: "image/jpeg", upsert: true });
+    if(up.error) throw up.error;
+    const { data } = db.storage.from("photos").getPublicUrl(path);
+    if(!await run(db.from("items").update({ photo_url: data.publicUrl }).eq("id", it.id), "Photo saved")) return;
+    it.photo_url = data.publicUrl;
+    drawSections();
+  }catch(err){
+    toast(err.message || "Could not upload that picture", true);
+  }
+});
+</script>
+</body>
+</html>

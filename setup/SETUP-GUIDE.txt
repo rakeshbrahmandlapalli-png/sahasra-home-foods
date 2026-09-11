@@ -1,0 +1,166 @@
+═══════════════════════════════════════════════════════════════════════
+ SAHASRA HOME FOODS — setting up the database and the admin login
+ Follow these in order. Stop at STEP 6 and send me the two lines it asks
+ for. Nothing works until that is done.
+═══════════════════════════════════════════════════════════════════════
+
+ WHY YOU HAVE TO DO STEPS 1-5 AND NOT ME
+ I am not allowed to create accounts or type passwords on your behalf.
+ That is a hard rule and it is there to protect you. Everything after
+ you send me the two lines, I do.
+
+ USE YOUR OWN SUPABASE LOGIN. MAKE A NEW *PROJECT*.
+
+ You already have a Supabase account (signed in with GitHub). Use it.
+ You do NOT need a second account — for this or for anything else.
+
+ What must be separate is the PROJECT, not the login. A new project
+ means a brand new database that cannot touch AeroPark's data. Same
+ login, separate box. That is the isolation that actually matters.
+
+ The only thing that should ever be in the family's name rather than
+ yours is a DOMAIN, if they buy one. Everything else moves in minutes.
+
+
+───────────────────────────────────────────────────────────────────────
+ STEP 1 — sign in
+───────────────────────────────────────────────────────────────────────
+ Go to  https://supabase.com/dashboard  and sign in with GitHub, the
+ same way you always do.
+
+ Nothing to create here. Go straight to step 2.
+
+
+───────────────────────────────────────────────────────────────────────
+ STEP 2 — create the project
+───────────────────────────────────────────────────────────────────────
+ Click "New project".
+
+   Name:      sahasra-home-foods
+   Password:  click "Generate a password", then SAVE IT somewhere safe.
+              You will almost never need it again, but if you lose it
+              you cannot get it back.
+   Region:    South Asia (Mumbai)     <- important, it is nearest
+   Plan:      Free
+
+ Click "Create new project" and wait about two minutes.
+
+ *** NEVER send that database password to me, or to anyone. ***
+
+
+───────────────────────────────────────────────────────────────────────
+ STEP 3 — build the tables
+───────────────────────────────────────────────────────────────────────
+ In the left sidebar click  SQL Editor  →  "New query".
+ Open the file  setup/schema.sql  from this folder, select ALL of it,
+ copy, paste into the box, and press  Run.
+
+ You should see "Success. No rows returned". That is correct.
+
+
+───────────────────────────────────────────────────────────────────────
+ STEP 4 — put the menu in
+───────────────────────────────────────────────────────────────────────
+ Same place: SQL Editor → New query.
+ Open  setup/seed.sql , copy all of it, paste, press  Run.
+
+ Then click  Table Editor  in the sidebar. Open the "items" table.
+ You should see 36 rows. If you do, the menu is in the database.
+
+
+───────────────────────────────────────────────────────────────────────
+ STEP 5 — create the login that can edit the menu
+───────────────────────────────────────────────────────────────────────
+ 5a. Sidebar → Authentication → Users → "Add user" → "Create new user".
+
+       Email:    whoever will edit the prices
+       Password: pick a strong one and save it in a password manager
+       Tick:     "Auto Confirm User"
+
+     Click "Create user".
+
+ 5b. NOW GIVE THAT PERSON PERMISSION TO EDIT.
+     Creating the login is not enough on its own — on purpose.
+
+     Go to SQL Editor → New query, put in the line below with their
+     email in place of the example, and press Run:
+
+       insert into admins (user_id, email)
+       select id, email from auth.users where email = 'her@email.com'
+       on conflict (user_id) do nothing;
+
+     It should say "Success. 1 row". If it says 0 rows, the email does
+     not match the one you typed in 5a — check the spelling.
+
+     Repeat 5a and 5b for each extra person. Only add people you trust:
+     anyone on this list can change every price on the site.
+
+ 5c. TURN OFF PUBLIC SIGN-UPS.
+     Sidebar → Authentication → Sign In / Providers → Email.
+     Switch OFF "Allow new users to sign up". Save.
+
+     Without this, strangers can create themselves an account. They
+     still could not edit anything (step 5b is what grants that), but
+     there is no reason to let them in at all.
+
+ *** NEVER send any of those passwords to me. ***
+
+
+────────────────────────────────────────────────────────────────────
+ STEP 6 — send me these two lines (and ONLY these two)
+────────────────────────────────────────────────────────────────────
+ Supabase changed its key system in 2026. A project made today uses the
+ NEW keys. Ignore anything online telling you to find an "anon key".
+
+ 6a. THE WEB ADDRESS
+     Sidebar → Project Settings (the gear) → API
+     Copy the value under  Project URL
+     It looks like   https://abcdefgh.supabase.co
+
+ 6b. THE KEY
+     Sidebar → Project Settings → API Keys
+     Open the  "Publishable and secret API keys"  tab.
+     Copy the  PUBLISHABLE  key. It starts with  sb_publishable_
+
+     If your project only offers a "Legacy API keys" tab, copy the
+     anon / public key from there instead — the long one starting
+     eyJ  — and tell me it was the legacy one.
+
+ Send me those two. Both are designed to be public: they end up inside
+ the website where anyone can read them, and the rules from STEP 3 mean
+ they can only READ the menu, never change it.
+
+ ┌────────────────────────────────────────────────────────────────┐
+ │  NEVER SEND ME, OR PUT IN ANY FILE:                              │
+ │    • the SECRET key    — starts with  sb_secret_                  │
+ │    • the service_role key, if you see a legacy tab               │
+ │    • the database password from STEP 2                           │
+ │    • the login password from STEP 5                              │
+ │                                                                 │
+ │  The secret key bypasses every rule on the database. If it ever │
+ │  reaches a web page, anyone on the internet can rewrite or wipe │
+ │  your menu. It belongs nowhere near this site.                  │
+ └────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────
+ WHAT HAPPENS AFTER THAT
+───────────────────────────────────────────────────────────────────────
+ I put those two lines into both pages, and then:
+
+   index.html  — the menu customers see. Reads from the database.
+                 If the database is ever down, it falls back to the
+                 copy kept inside the file, so it never goes blank.
+
+   admin.html  — the edit screen. Log in with the STEP 5 account and
+                 change any name, Telugu name, price, unit, section,
+                 photo, phone number. Changes are live immediately.
+
+
+───────────────────────────────────────────────────────────────────────
+ ONE THING TO KNOW ABOUT THE FREE PLAN
+───────────────────────────────────────────────────────────────────────
+ Supabase pauses free projects that get no traffic for 7 days. A live
+ site with visitors will not pause. If it ever does, you un-pause it
+ from the Supabase dashboard in one click — and in the meantime the
+ fallback copy keeps the customer menu working.

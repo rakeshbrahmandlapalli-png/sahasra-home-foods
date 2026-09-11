@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sahasra Home Foods — Manikonda, Hyderabad</title>
+<meta name="description" content="Homemade Telugu sweets, snacks, podi and fresh batters. Made to order in Manikonda, Hyderabad. Order on WhatsApp.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%239d1c20'/%3E%3Ctext x='32' y='46' font-family='Segoe UI,Arial,sans-serif' font-size='40' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+
+<!-- How the link looks when someone shares it on WhatsApp or Facebook.
+     If the site ever moves to its own domain, change the two addresses below. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sahasra Home Foods">
+<meta property="og:title" content="Sahasra Home Foods — Manikonda, Hyderabad">
+<meta property="og:description" content="Homemade Telugu sweets, snacks, podi and fresh batters. Made to order. Tap to see the menu and order on WhatsApp.">
+<meta property="og:url" content="https://sahasra-home-foods.vercel.app/">
+<meta property="og:image" content="https://sahasra-home-foods.vercel.app/brand/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="apple-touch-icon" href="brand/app-icon-192.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16181d; --ink-2:#5c6069; --ink-3:#8c9099;
+    --line:#e8e9ec; --line-2:#f2f3f5;
+    --bg:#ffffff; --bg-2:#f7f8fa;
+    --brand:#9d1c20; --brand-ink:#7d1518;
+    --veg:#0a8043;
+    --radius:12px;
+    --pad:16px;
+    --bar:72px;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --telugu:"Noto Sans Telugu",var(--sans);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--sans); color:var(--ink); background:var(--bg);
+    font-size:15px; line-height:1.45;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    padding-bottom:calc(var(--bar) + env(safe-area-inset-bottom));
+  }
+  .wrap{max-width:720px;margin:0 auto}
+  .te{font-family:var(--telugu)}
+  .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+  /* ── header ─────────────────────────────────────── */
+  .brandbar{background:var(--bg)}
+  header{
+    position:sticky;top:0;z-index:40;background:var(--bg);
+    border-bottom:1px solid var(--line);
+  }
+  .top{display:flex;align-items:center;gap:12px;padding:14px var(--pad) 12px}
+  .mark{
+    width:40px;height:40px;flex:0 0 40px;border-radius:10px;
+    background:var(--brand);color:#fff;display:grid;place-items:center;
+    font-weight:700;font-size:17px;letter-spacing:-.5px;
+  }
+  .brand h1{margin:0;font-size:16px;font-weight:650;letter-spacing:-.2px;line-height:1.2}
+  .brand p{margin:2px 0 0;font-size:12.5px;color:var(--ink-2);line-height:1.2}
+  .top .callbtn{
+    margin-left:auto;flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+    border:1px solid var(--line);background:var(--bg);color:var(--ink);
+    border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;font-weight:600;
+    text-decoration:none;
+  }
+  .top .callbtn:active{background:var(--bg-2)}
+
+  .search{padding:10px var(--pad) 12px}
+  .search input{
+    width:100%;border:1px solid var(--line);background:var(--bg-2);
+    border-radius:10px;padding:11px 14px;font:inherit;font-size:14.5px;color:var(--ink);
+    outline:none;
+  }
+  .search input::placeholder{color:var(--ink-3)}
+  .search input:focus{border-color:var(--ink-3);background:var(--bg)}
+
+  nav{
+    display:flex;flex-wrap:wrap;gap:2px 20px;padding:0 var(--pad) 11px;
+  }
+  nav button{
+    border:0;background:none;padding:3px 0 5px;cursor:pointer;
+    font:inherit;font-size:13px;font-weight:600;letter-spacing:.005em;
+    color:var(--ink-3);border-bottom:2px solid transparent;
+    transition:color .15s,border-color .15s;
+  }
+  nav button[aria-selected="true"]{color:var(--brand);border-bottom-color:var(--brand)}
+
+  /* ── sections ───────────────────────────────────── */
+  section{padding:0 var(--pad);scroll-margin-top:112px}
+  section + section .sechead{border-top:1px solid var(--line);margin-top:8px;padding-top:26px}
+  .sechead{
+    display:flex;align-items:baseline;gap:10px;
+    padding:22px 0 4px;
+  }
+  .sechead h2{margin:0;font-size:17px;font-weight:650;letter-spacing:-.2px}
+  .sechead span{font-size:12.5px;color:var(--ink-3);font-weight:500}
+  .secnote{
+    margin:0 0 6px;font-size:12.5px;color:var(--ink-2);
+  }
+
+  .item{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:15px 0;border-bottom:1px solid var(--line-2);
+  }
+  .item:last-child{border-bottom:0}
+  .item .info{flex:1 1 auto;min-width:0;padding-top:1px}
+  .item .right{
+    flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;
+    gap:1px;text-align:right;
+  }
+  .vegmark{
+    width:13px;height:13px;border:1.5px solid var(--veg);border-radius:3px;
+    display:inline-grid;place-items:center;vertical-align:-1px;margin-right:7px;
+  }
+  .vegmark i{width:6px;height:6px;background:var(--veg);border-radius:50%;display:block}
+  .item h3{margin:0;font-size:15px;font-weight:600;letter-spacing:-.1px;line-height:1.3}
+  .item .tel{margin:1px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.35}
+  .item .price{
+    margin:0;font-size:15.5px;font-weight:650;letter-spacing:-.2px;white-space:nowrap;
+  }
+  .item .per{
+    margin:0;font-size:11.5px;font-weight:500;color:var(--ink-3);
+    letter-spacing:.04em;white-space:nowrap;
+  }
+  .item .ask{
+    font-size:11.5px;font-weight:700;color:var(--brand);
+    letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;
+  }
+  /* The monogram tile IS the loading state: the photo sits on top of it and
+     covers it once decoded. Nothing is display:none, which matters — a hidden
+     image is never loaded by the browser, so lazy photos would never appear. */
+
+  /* Shown only in sections that already have at least one photo, so a menu
+     with no photos stays a clean list rather than a grid of empty boxes. */
+  .ph{
+    flex:0 0 72px;width:72px;height:72px;border-radius:8px;
+    display:grid;place-items:center;margin-top:1px;
+    border:1px solid var(--line-2);overflow:hidden;position:relative;
+    background:
+      repeating-linear-gradient(-45deg,
+        rgba(157,28,32,.045) 0 1px, transparent 1px 9px),
+      #faf7f5;
+  }
+  .ph span{
+    font-size:26px;font-weight:700;letter-spacing:-1px;
+    color:rgba(157,28,32,.26);line-height:1;user-select:none;
+  }
+  .ph img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    opacity:0;transition:opacity .25s ease;
+  }
+  .ph img.on{opacity:1}
+  .ctrl{display:flex;justify-content:flex-end;margin-top:7px;min-height:24px}
+  .add{
+    border:0;background:none;padding:2px 0;cursor:pointer;
+    font:inherit;font-size:12px;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--brand);
+    border-bottom:1.5px solid currentColor;line-height:1.5;
+  }
+  .add:active{opacity:.6}
+  .step{display:inline-flex;align-items:center}
+  .step button{
+    border:0;background:none;width:26px;height:24px;padding:0;cursor:pointer;
+    font:inherit;font-size:16px;font-weight:600;line-height:1;color:var(--brand);
+  }
+  .step button:active{opacity:.5}
+  .step b{
+    min-width:54px;text-align:center;font-size:12.5px;font-weight:700;
+    color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:.01em;
+  }
+
+  .empty{
+    padding:44px 20px;text-align:center;color:var(--ink-2);font-size:14.5px;
+    border:1px dashed var(--line);border-radius:12px;margin:20px 0 8px;background:var(--bg-2);
+  }
+  .empty b{display:block;font-size:15px;color:var(--ink);margin-bottom:4px;font-weight:650}
+
+  /* ── footer ─────────────────────────────────────── */
+  footer{
+    margin-top:32px;border-top:1px solid var(--line);background:var(--bg-2);
+    padding:24px var(--pad) 32px;
+  }
+  footer h4{margin:0 0 10px;font-size:13px;font-weight:650;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--ink-3)}
+  footer p{margin:0 0 6px;font-size:14px;color:var(--ink-2)}
+  footer a{color:var(--ink);font-weight:600;text-decoration:none}
+  .fnote{margin-top:18px;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+
+  /* ── order bar ──────────────────────────────────── */
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:var(--brand);color:#fff;
+    padding:11px var(--pad) calc(11px + env(safe-area-inset-bottom));
+    transform:translateY(120%);transition:transform .22s cubic-bezier(.4,0,.2,1);
+  }
+  .bar.on{transform:none}
+  .bar .inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:12px}
+  .bar .sum{flex:1 1 auto;min-width:0}
+  .bar .sum b{
+    display:block;font-size:11px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:rgba(255,255,255,.68);
+  }
+  .bar .sum span{
+    display:block;font-size:17px;font-weight:700;color:#fff;letter-spacing:-.3px;
+    font-variant-numeric:tabular-nums;
+  }
+  .bar .go{
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;
+    background:none;border:0;border-bottom:1.5px solid rgba(255,255,255,.55);
+    border-radius:0;padding:3px 0;color:#fff;text-decoration:none;
+    font:inherit;font-size:13.5px;font-weight:650;letter-spacing:.01em;cursor:pointer;
+  }
+  .bar .go:active{opacity:.65}
+  .bar .go svg{width:15px;height:15px;fill:currentColor}
+
+  /* ── on a mouse, things respond to the pointer ──── */
+  @media (hover:hover) and (pointer:fine){
+    nav button:hover{border-color:var(--ink-3);color:var(--ink)}
+    nav button[aria-selected="true"]:hover{background:var(--ink);color:#fff}
+    .top .callbtn:hover{border-color:var(--ink-3)}
+    footer a:hover{text-decoration:underline}
+    .bar .go:hover{border-bottom-color:#fff}
+    .add:hover{opacity:.75}
+  }
+
+  @media (min-width:721px){
+    .item{padding:18px 0}
+    body{font-size:15.5px}
+    .wrap{padding-inline:4px}
+    .item h3{font-size:15.5px}
+  }
+
+  /* ── keyboard users can see where they are ───────── */
+  :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:8px}
+  .search input:focus-visible{outline-offset:0}
+
+  ::selection{background:rgba(157,28,32,.14)}
+
+  /* ── respect the phone's motion setting ──────────── */
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+    html{scroll-behavior:auto !important}
+  }
+
+  /* ── if anyone prints the menu ───────────────────── */
+  @media print{
+    header .search,header nav,.bar,.ctrl,.side{display:none !important}
+    header{position:static;border-bottom:2px solid var(--ink)}
+    body{padding-bottom:0;font-size:11pt}
+    section{break-inside:avoid}
+    .item{padding:7px 0}
+    footer{background:none;border-top:1px solid var(--ink)}
+  }
+</style>
+</head>
+<body>
+
+<div class="brandbar">
+  <div class="wrap">
+    <div class="top">
+      <div class="mark">S</div>
+      <div class="brand">
+        <h1 id="shopName">Sahasra Home Foods</h1>
+        <p id="shopTag">Manikonda, Hyderabad · Made fresh to order</p>
+      </div>
+      <a class="callbtn" id="callBtn" href="tel:+917207806223">Call</a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="search">
+      <input id="q" type="search" placeholder="Search sweets, snacks, podi…" autocomplete="off">
+    </div>
+    <nav id="nav"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="menu"></main>
+
+<footer class="wrap">
+  <h4>Order &amp; enquiries</h4>
+  <p>WhatsApp · <a id="waLink" href="https://wa.me/919515362514">+91 95153 62514</a></p>
+  <p>Phone · <a id="telLink" href="tel:+917207806223">72078 06223</a></p>
+  <h4 style="margin-top:20px">Area</h4>
+  <p id="areaText">Manikonda, Hyderabad</p>
+  <p class="fnote" id="footNote">
+    Everything is cooked to order in small batches, so please allow time for
+    larger quantities. Bulk and festival orders welcome.
+  </p>
+</footer>
+
+<div class="bar" id="bar">
+  <div class="inner">
+    <div class="sum">
+      <b id="barCount">Your order</b>
+      <span id="barTotal">₹0</span>
+    </div>
+    <a class="go" id="barGo" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2A9.9 9.9 0 0 0 2.1 11.9c0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.9 9.9 0 0 0 4.74 1.2h.01A9.9 9.9 0 0 0 22 11.92 9.9 9.9 0 0 0 12.04 2Zm5.8 14.05c-.24.68-1.4 1.3-1.95 1.35-.5.05-1.13.07-1.83-.11a16.6 16.6 0 0 1-1.65-.61c-2.9-1.25-4.8-4.17-4.95-4.37-.14-.2-1.18-1.57-1.18-3s.75-2.13 1.02-2.42c.27-.29.58-.36.78-.36l.56.01c.18.01.42-.07.66.5.24.59.83 2.02.9 2.17.07.15.12.32.02.51-.1.2-.15.32-.3.49l-.44.52c-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12.99 2.06 1.3 2.35 1.45.29.15.46.12.63-.07.17-.2.73-.85.92-1.14.2-.29.39-.24.66-.15.27.1 1.7.8 1.99.95.29.15.48.22.55.34.07.12.07.7-.17 1.38Z"/></svg>
+      Send on WhatsApp
+    </a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   WHERE THE MENU LIVES
+
+   Both values are meant to be public and can only READ the menu.
+   NEVER put the SECRET key (sb_secret_...) or any password here.
+
+   The key below is a LEGACY "anon" key. It works, but Supabase retires
+   this format at the end of 2026. Swapping it for the newer publishable
+   key (Project Settings > API Keys) is a one-line change in both files.
+
+   This sits inside the page on purpose. It used to be a separate file,
+   but a separate file can be blocked by an ad blocker or left out of an
+   upload — and when that happened the site fell back to its built-in
+   menu without a word, which is exactly the kind of silent failure that
+   wastes an afternoon. Inline, there is nothing to block or forget.
+
+   NOTE: this block appears in BOTH index.html and admin.html.
+   If you change it, change it in both.
+   ═══════════════════════════════════════════════════════════════════ */
+window.SAHASRA_CONFIG = {
+  url:     "https://yziwrjghzqheuftywecf.supabase.co",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6aXdyamdoenFoZXVmdHl3ZWNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwODE5NDIsImV4cCI6MjEwNDY1Nzk0Mn0.6V5bNfuTsFUVRSnkNPSfuLcTiEgEXoNF0T9xa90BN9E",
+};
+</script>
+<script>
+/* ──────────────────────────────────────────────────────────────────────
+   MENU DATA — edit prices here and nowhere else.
+   price: a number, or null for "Call for price".
+   unit:  what one "1" means.   step: how much each tap adds.
+   ────────────────────────────────────────────────────────────────────── */
+let WHATSAPP = "919515362514";
+
+/*  This is the SAFETY COPY. The live menu comes from the database.
+    If the database is unreachable, paused or empty, the site shows this
+    instead of going blank. Keep it roughly up to date; it is not what
+    customers normally see.                                            */
+const FALLBACK_MENU = [
+  { id:"sweets", name:"Sweets", note:"Priced per kilogram", unit:"kg", step:0.5, items:[
+    { en:"Dry Fruit Laddu",  te:"డ్రై ఫ్రూట్ లడ్డు",      price:1850 },
+    { en:"Bakshalu",         te:"బక్షాలు (బొబ్బట్లు)",     price:800  },
+    { en:"Ariselu",          te:"అరిసెలు",                price:550  },
+    { en:"Nuvvula Laddu",    te:"నువ్వుల లడ్డు",          price:400  },
+    { en:"Murmura Laddu",    te:"మరమరాల లడ్డు",           price:400  },
+    { en:"Palli Laddu",      te:"పల్లి లడ్డు",             price:300  },
+    { en:"Bondi Laddu",      te:"బొంది లడ్డు",            price:300  },
+  ]},
+
+  { id:"snacks", name:"Snacks", note:"Priced per kilogram", unit:"kg", step:0.5, items:[
+    { en:"Poha Mixture",          te:"అటుకుల మిక్చర్",        price:680 },
+    { en:"Karam Senagapappu",     te:"కారం శెనగపప్పు",        price:600 },
+    { en:"Ribbon Pakoda",         te:"రిబ్బన్ పకోడా",         price:600 },
+    { en:"Sakinalu",              te:"సకినాలు",               price:400 },
+    { en:"Palli Chekalu",         te:"పల్లి చెకలు",            price:400 },
+    { en:"Pappu Chekalu",         te:"పప్పు చెకలు",           price:400 },
+    { en:"Star Murukulu",         te:"స్టార్ మురుకులు",       price:400 },
+    { en:"Janthikalu",            te:"జంతికలు",               price:400 },
+    { en:"Karam Bondi",           te:"కారం బొంది",            price:350 },
+    { en:"Bondi Mixture",         te:"బొంది మిక్చర్",         price:350 },
+    { en:"Corn Flakes Mixture",   te:"కార్న్ ఫ్లేక్స్ మిక్చర్", price:300 },
+    { en:"Chudva Atukulu",        te:"చూడ్వా అటుకులు",       price:280 },
+  ]},
+
+  { id:"podi", name:"Podi & Powders", note:"Priced per 250 g pack", unit:"pack", step:1, items:[
+    { en:"Munagaku Powder",     te:"మునగాకు పొడి",          price:170  },
+    { en:"Vellulli Karam Podi", te:"వెల్లుల్లి కారం పొడి",    price:165  },
+    { en:"Curry Leaves Powder", te:"కరివేపాకు పొడి",        price:150  },
+    { en:"Kandi Podi",          te:"కంది పొడి",              price:150  },
+    { en:"Flax Seeds Powder",   te:"అవిసె గింజల పొడి",       price:null },
+    { en:"Idli Karam Powder",   te:"ఇడ్లీ కారం పొడి",        price:null },
+  ]},
+
+  { id:"batter", name:"Fresh Batters", note:"Priced per kilogram", unit:"kg", step:1, items:[
+    { en:"Idli Batter", te:"ఇడ్లీ పిండి", price:70   },
+    { en:"Dosa Batter", te:"దోస పిండి",   price:70   },
+    { en:"Vada Batter", te:"వడ పిండి",     price:null },
+  ]},
+
+  { id:"bowls", name:"Healthy Bowls", note:"Made fresh daily · each", unit:"bowl", step:1, items:[
+    { en:"Chana Bowl",      te:"శెనగల బౌల్",       price:40 },
+    { en:"Sweet Corn Bowl", te:"స్వీట్ కార్న్ బౌల్", price:40 },
+    { en:"Protein Bowl",    te:"ప్రోటీన్ బౌల్",     price:40 },
+    { en:"Fruit Bowl",      te:"ఫ్రూట్ బౌల్",       price:40 },
+    { en:"Veg Sandwich",    te:"వెజ్ శాండ్‌విచ్",    price:40 },
+  ]},
+
+  { id:"dry", name:"Dry Fruits", note:"Priced per kilogram", unit:"kg", step:0.5, items:[
+    { en:"Cashews", te:"జీడిపప్పు", price:1020 },
+    { en:"Almonds", te:"బాదం",      price:null },
+    { en:"Raisins", te:"కిస్మిస్",   price:null },
+  ]},
+];
+
+let MENU = FALLBACK_MENU;
+
+/* ────────────────────────────────────────────────────────────────────── */
+
+const cart = new Map();                 // key -> qty
+const key  = (s,i) => s + ":" + i;
+const $    = id => document.getElementById(id);
+
+const rupees = n => "₹" + Math.round(n).toLocaleString("en-IN");
+const qtyText = (q, unit) =>
+  unit === "kg" ? (Number.isInteger(q) ? q + " kg" : q + " kg")
+                : q + " " + unit + (q > 1 ? "s" : "");
+
+function build(){
+  $("nav").innerHTML = MENU.map((s,i) =>
+    `<button role="tab" aria-selected="${i===0}" data-go="${s.id}">${s.name}</button>`).join("");
+
+  $("menu").innerHTML = MENU.map(s => `
+    <section id="${s.id}" data-sec="${s.id}">
+      <div class="sechead"><h2>${s.name}</h2><span>${s.items.length} items</span></div>
+      <p class="secnote">${s.note}</p>
+      ${s.items.map((it,i) => row(s,it,i)).join("")}
+    </section>`).join("") + `<div class="empty" id="noHits" hidden><b>Nothing matched that</b>Try a shorter word, or browse the sections above.</div>`;
+}
+
+function row(s,it,i){
+  const k = key(s.id,i);
+  const price = it.price === null
+    ? `<p class="ask">Ask for price</p>`
+    : `<p class="price num">${rupees(it.price)}</p>
+       <p class="per">per ${s.unit}</p>`;
+  return `
+    <div class="item" data-k="${k}" data-find="${(it.en+" "+it.te).toLowerCase()}">
+      ${thumb(it, s)}
+      <div class="info">
+        <h3><span class="vegmark"><i></i></span>${it.en}</h3>
+        <p class="tel te">${it.te}</p>
+      </div>
+      <div class="right">
+        ${price}
+        <div class="ctrl" id="c-${k}">${ctrl(k)}</div>
+      </div>
+    </div>`;
+}
+
+/* Photos come from the admin screen and live in the database.
+   A section with no photos at all shows none — a clean list reads as a
+   deliberate choice. The moment ONE item in a section has a photo, the rest
+   get a monogram tile, so the rows stay the same height while the family
+   adds pictures a few at a time. */
+function thumb(it, sec){
+  if(!it.photo && !sec.items.some(x => x.photo)) return "";
+  const initial = (it.en.trim()[0] || "•").toUpperCase();
+  const photo = it.photo
+    ? `<img alt="${it.en}" src="${it.photo}" loading="lazy" decoding="async"
+           onload="this.classList.add('on')" onerror="this.remove()">`
+    : "";
+  return `<div class="ph"><span aria-hidden="true">${initial}</span>${photo}</div>`;
+}
+
+function ctrl(k){
+  const q = cart.get(k);
+  if(!q) return `<button class="add" data-add="${k}">Add</button>`;
+  const [sid] = k.split(":"), sec = MENU.find(s => s.id === sid);
+  const n = q % 1 ? q.toFixed(2).replace(/0$/, "") : q;
+  return `<div class="step">
+      <button data-dec="${k}" aria-label="Less">−</button>
+      <b>${n} ${sec.unit}</b>
+      <button data-inc="${k}" aria-label="More">+</button>
+    </div>`;
+}
+
+function change(k, dir){
+  const [sid, idx] = k.split(":");
+  const sec = MENU.find(s => s.id === sid);
+  const cur = cart.get(k) || 0;
+  const next = Math.round((cur + dir * sec.step) * 100) / 100;
+  if(next <= 0) cart.delete(k); else cart.set(k, next);
+  $("c-" + k).innerHTML = ctrl(k);
+  paintBar();
+}
+
+function lines(){
+  const out = [];
+  cart.forEach((q,k) => {
+    const [sid, idx] = k.split(":");
+    const sec = MENU.find(s => s.id === sid);
+    const it  = sec.items[+idx];
+    out.push({ it, sec, q, sub: it.price === null ? null : it.price * q });
+  });
+  return out;
+}
+
+function paintBar(){
+  const L = lines();
+  const total = L.reduce((t,l) => t + (l.sub || 0), 0);
+  const ask   = L.some(l => l.sub === null);
+  $("bar").classList.toggle("on", L.length > 0);
+  $("barCount").textContent = L.length + (L.length === 1 ? " item" : " items");
+  $("barTotal").textContent = ask ? rupees(total) + " + items to price" : rupees(total);
+  $("barGo").href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(message(L, total, ask));
+}
+
+function message(L, total, ask){
+  const t = ["Hello Sahasra Home Foods,", "", "I would like to order:", ""];
+  L.forEach(l => {
+    const q = qtyText(l.q, l.sec.unit);
+    t.push("• " + l.it.en + " — " + q + (l.sub === null ? " (please confirm price)" : " — " + rupees(l.sub)));
+  });
+  t.push("", "Total: " + rupees(total) + (ask ? " (plus the items above to confirm)" : ""));
+  t.push("", "Name:", "Delivery address:", "Needed by:");
+  return t.join("\n");
+}
+
+/* search */
+function filter(){
+  const q = $("q").value.trim().toLowerCase();
+  let hits = 0;
+  document.querySelectorAll(".item").forEach(el => {
+    const on = !q || el.dataset.find.includes(q);
+    el.hidden = !on;
+    if(on) hits++;
+  });
+  document.querySelectorAll("section[data-sec]").forEach(sec => {
+    sec.hidden = ![...sec.querySelectorAll(".item")].some(el => !el.hidden);
+  });
+  $("noHits").hidden = hits > 0;
+}
+
+/* events */
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-add]"), inc = e.target.closest("[data-inc]"),
+        dec = e.target.closest("[data-dec]"), go = e.target.closest("[data-go]");
+  if(a)   change(a.dataset.add, +1);
+  if(inc) change(inc.dataset.inc, +1);
+  if(dec) change(dec.dataset.dec, -1);
+  if(go){
+    document.querySelectorAll("#nav button").forEach(b =>
+      b.setAttribute("aria-selected", b === go));
+    document.getElementById(go.dataset.go).scrollIntoView({behavior:"smooth", block:"start"});
+  }
+});
+$("q").addEventListener("input", filter);
+
+/* highlight the section you're looking at */
+const spy = new IntersectionObserver(es => {
+  es.forEach(en => {
+    if(!en.isIntersecting) return;
+    let picked = null;
+    document.querySelectorAll("#nav button").forEach(b => {
+      const on = b.dataset.go === en.target.id;
+      b.setAttribute("aria-selected", on);
+      if(on) picked = b;
+    });
+  });
+}, { rootMargin:"-112px 0px -70% 0px" });
+
+function render(){
+  cart.clear();
+  build();
+  paintBar();
+  filter();
+  MENU.forEach(s => { const el = document.getElementById(s.id); if(el) spy.observe(el); });
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   THE LIVE MENU
+   Paint the safety copy straight away so the page is never empty, then
+   ask the database for the real one and swap it in. If that call fails
+   for any reason the customer keeps the safety copy and sees nothing odd.
+   ────────────────────────────────────────────────────────────────────── */
+render();
+
+async function loadLiveMenu(){
+  const cfg = window.SAHASRA_CONFIG;
+  if(!cfg || !cfg.url || !cfg.anonKey || !window.supabase) return;
+
+  const db = window.supabase.createClient(cfg.url, cfg.anonKey);
+
+  const [secs, items, setts] = await Promise.all([
+    db.from("sections").select("*").eq("visible", true).order("sort"),
+    db.from("items").select("*").eq("available", true).order("sort"),
+    db.from("settings").select("*").eq("id", 1).maybeSingle(),
+  ]);
+
+  if(secs.error || items.error) throw secs.error || items.error;
+  if(!secs.data || !secs.data.length) return;          // empty DB: keep the copy
+
+  MENU = secs.data.map(s => ({
+    id:   s.slug,
+    name: s.name,
+    note: s.note || "",
+    unit: s.unit || "kg",
+    step: Number(s.step) || 1,
+    items: (items.data || [])
+      .filter(i => i.section_id === s.id)
+      .map(i => ({
+        en: i.name_en,
+        te: i.name_te || "",
+        price: i.price === null ? null : Number(i.price),
+        photo: i.photo_url || null,
+      })),
+  })).filter(s => s.items.length);
+
+  if(!MENU.length){ MENU = FALLBACK_MENU; return; }
+
+  const c = setts && setts.data;
+  if(c){
+    WHATSAPP = c.whatsapp || WHATSAPP;
+    const set = (id, txt) => { const el = $(id); if(el && txt) el.textContent = txt; };
+    set("shopName", c.shop_name);
+    set("shopTag",  c.tagline);
+    set("areaText", c.area);
+    set("footNote", c.footer_note);
+    if(c.shop_name) document.title = c.shop_name + (c.area ? " — " + c.area : "");
+    if(c.phone){
+      $("callBtn").href = "tel:" + c.phone;
+      $("telLink").href = "tel:" + c.phone;
+      $("telLink").textContent = c.phone;
+    }
+    if(c.whatsapp){
+      $("waLink").href = "https://wa.me/" + c.whatsapp;
+      $("waLink").textContent = "+" + c.whatsapp;
+    }
+  }
+
+  render();
+}
+
+loadLiveMenu().catch(err => console.warn("Live menu unavailable, showing the built-in copy.", err));
+</script>
+</body>
+</html>

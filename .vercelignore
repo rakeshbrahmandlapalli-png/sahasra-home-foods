@@ -1,0 +1,5 @@
+# Working notes and database scripts — they belong in the repo,
+# but they have no business on a customer-facing website.
+setup/
+*.txt
+.gitignore
