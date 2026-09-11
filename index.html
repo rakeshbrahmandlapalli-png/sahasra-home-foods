@@ -81,10 +81,16 @@
   }
   .top .callbtn:active{background:var(--bg-2)}
 
-  .search{padding:10px var(--pad) 12px}
+  .search{padding:10px var(--pad) 12px;position:relative}
+  .search svg{
+    position:absolute;left:calc(var(--pad) + 13px);top:50%;transform:translateY(-50%);
+    width:15px;height:15px;stroke:var(--ink-3);fill:none;stroke-width:2;
+    pointer-events:none;transition:stroke .15s;
+  }
+  .search:focus-within svg{stroke:var(--brand)}
   .search input{
     width:100%;border:1px solid var(--line);background:var(--bg);
-    border-radius:8px;padding:11px 14px;font:inherit;font-size:14.5px;color:var(--ink);
+    border-radius:8px;padding:11px 14px 11px 38px;font:inherit;font-size:14.5px;color:var(--ink);
     outline:none;transition:border-color .15s,box-shadow .15s;
   }
   .search input::placeholder{color:var(--ink-3);font-size:14px}
@@ -229,6 +235,23 @@
   footer p{margin:0 0 5px;font-size:14px;color:var(--ink-2);line-height:1.5}
   footer a{color:var(--ink);font-weight:600;text-decoration:none;
     border-bottom:1px solid var(--line);padding-bottom:1px}
+  .credits{
+    margin:26px 0 0;padding-top:20px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--ink-3);
+  }
+  .credits summary{
+    cursor:pointer;font-family:var(--sans);font-size:9.5px;font-weight:700;
+    letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);
+    list-style:none;
+  }
+  .credits summary::-webkit-details-marker{display:none}
+  .credits summary::after{content:" +";font-weight:700}
+  .credits[open] summary::after{content:" 2"}
+  .credits p{margin:12px 0 10px;font-size:12.5px;color:var(--ink-3);line-height:1.6}
+  .credits ul{margin:0;padding-left:17px;line-height:1.65}
+  .credits li{margin:0 0 5px}
+  .credits a{color:var(--ink-2);font-weight:500;border-bottom-color:var(--line-2)}
+
   .fnote{
     margin:28px 0 0;padding-top:20px;border-top:1px solid var(--line);
     font-size:12.5px;color:var(--ink-3);line-height:1.6;max-width:56ch;
@@ -274,8 +297,24 @@
   @media (min-width:721px){
     .item{padding:18px 0}
     body{font-size:15.5px}
-    .wrap{padding-inline:4px}
-    .item h3{font-size:15.5px}
+    .item h3{font-size:19px}
+  }
+
+  /* A single 720px ribbon down the middle of a laptop screen wastes the
+     page. Wide screens set the menu in two columns, the way a printed
+     menu card does. */
+  @media (min-width:1000px){
+    .wrap{max-width:980px}
+    section{
+      display:grid;grid-template-columns:1fr 1fr;
+      column-gap:52px;align-items:start;
+    }
+    .sechead,.secnote{grid-column:1/-1}
+    .item{border-bottom:1px solid var(--line-2)}
+    .item:last-child{border-bottom:1px solid var(--line-2)}
+    section + section .sechead{padding-top:34px}
+    .bar .inner{max-width:980px}
+    footer .fgrid{grid-template-columns:1fr 1fr 1fr}
   }
 
   /* ── keyboard users can see where they are ───────── */
@@ -319,6 +358,9 @@
 <header>
   <div class="wrap">
     <div class="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round">
+        <circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.6-3.6"></path>
+      </svg>
       <input id="q" type="search" placeholder="Search sweets, snacks, podi…" autocomplete="off">
     </div>
     <nav id="nav"></nav>
@@ -343,6 +385,23 @@
     </div>
   </div>
 
+  <details class="credits">
+    <summary>Photo credits</summary>
+    <p>Some items show a licensed stock photograph rather than our own
+       cooking, while we photograph each one. Sourced from Wikimedia Commons.</p>
+    <ul>
+      <li>Ariselu &mdash; <a href="https://commons.wikimedia.org/wiki/File%3AAdhirasam%20Picture.JPG" rel="noopener" target="_blank">photograph</a> by Nithyasrm, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license noopener" target="_blank">CC BY-SA 4.0</a>. Cropped and resized.</li>
+      <li>Bakshalu &mdash; <a href="https://commons.wikimedia.org/wiki/File%3APuran%20Poli%20image.jpg" rel="noopener" target="_blank">photograph</a> by Had5185, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license noopener" target="_blank">CC BY-SA 4.0</a>. Cropped and resized.</li>
+      <li>Bondi Laddu &mdash; <a href="https://commons.wikimedia.org/wiki/File%3ABoondi%20Laddoo.jpg" rel="noopener" target="_blank">photograph</a> by Abhishek Anshuwali, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license noopener" target="_blank">CC BY-SA 4.0</a>. Cropped and resized.</li>
+      <li>Sakinalu &mdash; <a href="https://commons.wikimedia.org/wiki/File%3ASakinalu%2C%20dark%20and%20light-2159.jpg" rel="noopener" target="_blank">photograph</a> by Raimond Spekking, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license noopener" target="_blank">CC BY-SA 4.0</a>. Cropped and resized.</li>
+      <li>Janthikalu &mdash; <a href="https://commons.wikimedia.org/wiki/File%3AMurukku%20variety%2002.jpg" rel="noopener" target="_blank">photograph</a> by Vis M, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license noopener" target="_blank">CC BY-SA 4.0</a>. Cropped and resized.</li>
+      <li>Bondi Mixture &mdash; <a href="https://commons.wikimedia.org/wiki/File%3ACofresh%20Bombay%20Mix.jpg" rel="noopener" target="_blank">photograph</a> by Mx. Granger, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="license noopener" target="_blank">CC0</a>. Cropped and resized.</li>
+      <li>Cashews &mdash; <a href="https://commons.wikimedia.org/wiki/File%3ACASHEW%20NUTS.jpg" rel="noopener" target="_blank">photograph</a> by Ranjithkumar Murugesan, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="license noopener" target="_blank">CC0</a>. Cropped and resized.</li>
+      <li>Idli Batter &mdash; <a href="https://commons.wikimedia.org/wiki/File%3AIdli%20Batter.JPG" rel="noopener" target="_blank">photograph</a> by SijiR, <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="license noopener" target="_blank">CC BY-SA 3.0</a>. Cropped and resized.</li>
+      <li>Curry Leaves Powder &mdash; <a href="https://commons.wikimedia.org/wiki/File%3ACurry%20Leaf%20Powder%20And%20Idli.jpg" rel="noopener" target="_blank">photograph</a> by Prakrutim, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license noopener" target="_blank">CC BY-SA 4.0</a>. Cropped and resized.</li>
+      <li>Fruit Bowl &mdash; <a href="https://commons.wikimedia.org/wiki/File%3AFruit%20Salad%20Or%20Fruit%20Bowl.jpg" rel="noopener" target="_blank">photograph</a> by Manjeshwari poet mysore, <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="license noopener" target="_blank">CC BY-SA 4.0</a>. Cropped and resized.</li>
+    </ul>
+  </details>
   <p class="fnote" id="footNote">
     Everything is cooked to order in small batches, so please allow time for
     larger quantities. Bulk and festival orders welcome.
